@@ -8,7 +8,7 @@
 
 ```
 Content-Type: "application/json"
-User-Agent: "..."
+User-Agent: "Fill it with some user agent"
 ```
 
 

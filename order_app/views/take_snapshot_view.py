@@ -2,6 +2,7 @@
 
 """
 from django.http import HttpResponse
+
 from services.take_snapshot import take_snapshot
 
 

@@ -1,18 +1,9 @@
 {% extends "orders/base.html" %}
 
-{% block title %}Orders observer{% endblock %}
+{% block title %}Orders snapshots{% endblock %}
 
 {% block content %}
 <div class="container">
-  <div class="row">
-    <div class="col-12 text-center">
-      </br>
-      <h1><span class="text-danger">Sell @ {{coin_info.lowest_sell}}</span> |
-        <span class="text-success">Buy @ {{coin_info.highest_buy}}</span></h1>
-      <p>Previous highest buy @ and lowest sell @ </br>
-        Price wasn't changed for {{ timedelta }} hours</p>
-    </div>
-  </div>
   {% if object_list %}
   <div class="row">
     <div class="col-12">
@@ -20,22 +11,17 @@
         <thead>
         <tr>
           <th>Lookup Time</th>
-          <th>Change sell</th>
-          <th>Best Sell</th>
-          <th>Change buy</th>
-          <th>Best Buy</th>
+          <th>Hash of response</th>
         </tr>
         </thead>
         <tbody>
-        {% for price in object_list %}
+        {% for snapshot in page_obj %}
         <tr>
-          <td>{{ price.lookup_time|date:"d.m.Y" }}
-            {{ price.lookup_time|time:"H:i:s" }}
+          <td>{{ snapshot.lookup_time|date:"d.m.Y" }}
+            {{snapshot.lookup_time|time:"H:i:s" }}
           </td>
-          <td>{{ price.sell_change }}</td>
-          <td>{{ price.best_sell }}</td>
-          <td>{{ price.buy_change }}</td>
-          <td>{{ price.best_buy }}</td>
+          <td><a href="{% url 'order_app:snapshot-detail' snapshot.pk %}">
+            {{snapshot.hash_as_hex }}</a></td>
         </tr>
         {% endfor %}
         </tbody>
@@ -46,10 +32,10 @@
     <div class="col-12">
       <ul class="pagination pagination-lg justify-content-center pg-dark">
         {# Previuos page block #}
-        {% if object_list.has_previous %}
+        {% if page_obj.has_previous %}
         <li class="page-item">
           <a class="page-link"
-             href="?page={{ object_list.previous_page_number }}">Prev</a>
+             href="?page={{ page_obj.previous_page_number }}">Prev</a>
         </li>
         {% else %}
         <li class="page-item disabled"><a class="page-link" href="#">Prev</a>
@@ -58,13 +44,13 @@
 
         {# Current page block #}
         <li class="page-item disabled"><a class="page-link" href="#">{{
-          object_list.number }}/{{ object_list.paginator.num_pages }}</a></li>
+          page_obj.number }}/{{ page_obj.paginator.num_pages }}</a></li>
 
         {# Next page block #}
-        {% if object_list.has_next %}
+        {% if page_obj.has_next %}
         <li class="page-item">
           <a class="page-link"
-             href="?page={{ object_list.next_page_number }}">Next</a>
+             href="?page={{ page_obj.next_page_number }}">Next</a>
         </li>
         {% else %}
         <li class="page-item disabled"><a class="page-link" href="#">Next</a>

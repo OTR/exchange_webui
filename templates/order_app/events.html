@@ -1,0 +1,12 @@
+{% extends "orders/base.html" %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      {% for orderbook in object_list %}
+      <pre> {{ orderbook.get_prev }} </pre>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

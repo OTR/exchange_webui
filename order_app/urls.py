@@ -1,15 +1,25 @@
 """
 
 """
-from django.urls import path, include
+from django.urls import path
 
-from order_app import views
+from .views import BidAskView, take_snapshot_view, orders_view
+from .views import SnapshotView, SnapshotDetailView, TaskView, IndexView
+from .views import FaucetView, OrderBookEventView
 
 
-app_name = "order_app"
 urlpatterns = [
-    path("", views.IndexView.as_view(), name="index"),
-    path("orders/", views.OrderView.as_view(), name="orders"),
-    path("bid-ask/", views.BidAskView.as_view(), name="bid-ask"),
-    path("take-snapshot/", views.take_snapshot_view, name="take-snapshot"),
+    path("", IndexView.as_view(), name="index"),
+    path("bid-ask/", BidAskView.as_view(), name="bid-ask"),
+    path("faucet/", FaucetView.as_view(), name="faucet"),
+    path("events/", OrderBookEventView.as_view(), name="events"),
+    path("orders/", orders_view, name="orders"),
+    path("take-snapshot/", take_snapshot_view, name="take-snapshot"),
+    path("tasks/", TaskView.as_view(), name="tasks"),
+    path("snapshots/", SnapshotView.as_view(), name="snapshots"),
+    path(
+        "snapshots/<int:pk>/",
+        SnapshotDetailView.as_view(),
+        name="snapshot-detail"
+    ),
 ]

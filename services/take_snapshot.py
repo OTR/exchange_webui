@@ -35,7 +35,6 @@ def take_snapshot():
             elif rows_count > 0:
                 last_snapshot = OrderSnapshot.objects.order_by("-lookup_time",
                                                                "-pk").first()
-                last_hash = last_snapshot.hash_field
                 if last_hash != _hash:
                     new_row = OrderSnapshot.objects.create(
                         hash_field=snapshot["_hash"],

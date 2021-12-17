@@ -4,7 +4,7 @@
 
 Documentation at above link is outdated
 
-This README file is last modified on 19.12.2021
+This README file is last modified on 21.12.2021
 
 Current version of API: v3
 
@@ -117,14 +117,20 @@ Headers: ``
 Body:
 
 ```json
-    {
+{
   "result": "success",
-  "coinInfo": {
-    "lastPrice": last price,
-    "volume24h": volume for last 24h,
-    "highest24h": highest price for last 24h,
-    "lowest24h": lowest price for last 24h,
-    "change24h": change for last 24h
+  "data": {
+    "coinInfo": [
+        {
+          "lastPrice": 0.00000772,
+          "volume24h": 1247.37609537,
+          "highest24h": 0.00000772,
+          "lowest24h": 0.0000077,
+          "change24h": 0.26,
+          "highestBuy": 0.000004,
+          "lowestSell": 0.00000772
+        }
+      ]
   }
 }
 ```
