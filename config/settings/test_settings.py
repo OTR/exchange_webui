@@ -1,5 +1,5 @@
 """
-Settings for test environment.
+Concrete settings for local test environment.
 """
 from .common_settings import *
 
@@ -13,3 +13,9 @@ DATABASES = {
         'NAME': BASE_DIR / ".app_data" / 'db.sqlite3',
     }
 }
+
+MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = '/media/'  # FIXME: not used
+STATIC_DIR = BASE_DIR / "static"
+STATICFILES_DIRS = [STATIC_DIR]
+STATIC_URL = '/static/'

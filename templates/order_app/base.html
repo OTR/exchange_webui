@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+<title>{% block title %}{% endblock %}</title>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css"
+      href="{% static 'order_app/css/bootstrap.min.css' %}">
+<script type="text/javascript"
+        src="{% static 'order_app/js/jquery-3.4.1.slim.min.js' %}"></script>
+<script type="text/javascript"
+        src="{% static 'order_app/js/popper.min.js' %}"></script>
+<script type="text/javascript"
+        src="{% static 'order_app/js/bootstrap.min.js' %}"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="{% url 'order_app:index' %}">Home</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'order_app:bid-ask' %}">Bid/Ask</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'order_app:orders' %}">Orders</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+{% block content %}
+{% endblock %}
+</body>
+</html>

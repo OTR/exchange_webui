@@ -1,0 +1,87 @@
+{% extends "order_app/base.html" %}
+
+{% block title %}Orders observer{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% if sellbuy_orders %}
+    {% if bar %}
+    <div class="row">
+        <div class="col-12">
+            {% for key_orders, value_orders in sellbuy_orders.items %}
+            {% if key_orders == "sell_orders" %}
+            {% for order in value_orders %}
+            <div class="progress">
+                <div class="progress-bar bg-danger" role="progressbar"
+                     style="width: {{ order.percent }}%"
+                     area-valuenow="{{ order.percent }}"
+                     area-valuemin="0" area-valuemax="100">
+                    {{ order.price }}
+                </div>
+            </div>
+            {% endfor %}
+            <hr>
+            {% else %}
+            {% for order in value_orders %}
+            <div class="progress">
+                <div class="progress-bar bg-success" role="progressbar"
+                     style="width: {{ order.percent }}%"
+                     area-valuenow="{{ order.percent }}"
+                     area-valuemin="0" area-valuemax="100">
+                    {{ order.price }}
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    {% for key_orders, value_orders in sellbuy_orders.items %}
+    <div class="row">
+        <div class="col-12">
+            {% if key_orders == "sell_orders" %}
+            <h3 class="text-danger"> Sell orders</h3>
+            {% else %}
+            <h3 class="text-success"> Buy orders</h3>
+            {% endif %}
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Order ID</th>
+                    <th>Amount</th>
+                    <th>Price</th>
+                    <th>Label</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for order in value_orders %}
+                {% if order.admin %}
+                <tr class="bg-secondary">
+                    {% else %}
+                <tr>
+                    {% endif %}
+                    <td>{{ order.date|date:"d.m.Y" }} {{ order.date|time:"H:i:s"
+                        }}
+                    </td>
+                    <td>{{ order.orderId }}</td>
+                    <td>{{ order.amount }}</td>
+                    <td>{{ order.price }}</td>
+                    <td>{{ order.label }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="row">
+        <div class="col-12">
+            <p>No orders are available.</p>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

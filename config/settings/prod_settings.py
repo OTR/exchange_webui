@@ -1,5 +1,8 @@
 """
-Settings for production use.
+Base settings for production use, DO NOT use it on its own, any concrete
+production settings should extend this settings.
+
+See: https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 """
 from django.core.exceptions import ImproperlyConfigured
 
