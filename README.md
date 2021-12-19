@@ -23,3 +23,7 @@ $ python manage.py runserver
 (Windows)
 
 Control Panel > User Accounts > Change environment variables
+
+### TODO List
+
+rename `bootstrap.css` to `bootstrap-4.4.1.css`

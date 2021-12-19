@@ -104,11 +104,19 @@ def format_orders(orders, is_buy_order=False):
         price = int(float(order["price"]) * 10 ** 8)
         amount = int(float(order["amount"]))
         # TODO: add days/hours ago column
+        # block hack
+        try:
+            date = order["date"]
+        except KeyError as err:
+            pass
+        finally:
+            order["date"] = 0
+        # endblock hack
         if order["date"] == 0:
             date_as_int = 0
             admin = True
         else:
-            # Trim millis to prevent `OSError [Errno 22]Invalid argument`
+            # Trim millis to prevent `OSError [Errno 22] Invalid argument`
             date_as_int = order["date"] // 100
             admin = False
 
@@ -117,10 +125,10 @@ def format_orders(orders, is_buy_order=False):
 
         formatted_orders.append({
             "price": price,
-            "orderId": order["data"]["orderId"],
+            # "orderId": order["data"]["orderId"],
             "amount": amount,
             "date": python_date,
-            "label": order["label"],
+            # "label": order["label"],
             "total": order["total"],
             "admin": admin,
             "percent": order["percent"]

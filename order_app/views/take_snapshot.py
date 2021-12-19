@@ -5,7 +5,7 @@ import logging
 
 from django.http import HttpResponse
 
-from order_app.models import OrderSnapshot
+from order_app.models.order_snapshot import OrderSnapshot
 from .fetch import fetch, validate_order_book
 
 

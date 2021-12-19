@@ -21,10 +21,10 @@ class OrderSnapshot(models.Model):
 
         return f"{local_time} {hash_}"
 
-    def _hash_as_hex(self):
-        """Return _hash field represented as hex"""
+    def hash_as_hex(self):
+        """Return hash_field represented as hex."""
         return self.hash_field
 
     def data_as_string(self):
-        """Return data (JSON response) as string"""
+        """Return data (JSON response) as string."""
         return self.data.decode("UTF-8")

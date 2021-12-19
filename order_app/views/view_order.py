@@ -8,19 +8,20 @@ from django.views.generic import TemplateView
 
 from .fetch import fetch, format_orders
 
+
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 
 class OrderView(TemplateView):
     """"""
-    template_name = "order_app/order_app.html"
+    template_name = "order_app/orders.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # URL = "https://www.occe.io/api/v2/public/orders/ltv_usdt"
-        URL = "https://api.occe.io/public/orders/ltv_usdt"
-        data = fetch(URL)
+        # url = "https://www.occe.io/api/v2/public/orders/ltv_usdt"
+        url = "https://api.occe.io/public/orders/ltv_usdt"
+        data = fetch(url)
         if data is None:
             logger.info("Fetcher returned None")
             return {}
