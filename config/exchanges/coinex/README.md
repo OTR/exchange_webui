@@ -1,6 +1,6 @@
 [General Info](https://viabtc.github.io/coinex_api_en_doc/)
 
-[API Documentation | Spot](https://viabtc.github.io/coinex_api_en_doc/spot/)
+[CoinEx API Documentation | Spot](https://viabtc.github.io/coinex_api_en_doc/spot/)
 
 * BASE URL: `https://api.coinex.com/v1`
 
