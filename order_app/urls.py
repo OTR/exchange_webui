@@ -11,6 +11,5 @@ urlpatterns = [
     path("", views.IndexView.as_view(), name="index"),
     path("orders/", views.OrderView.as_view(), name="orders"),
     path("bid-ask/", views.BidAskView.as_view(), name="bid-ask"),
-    path("take-snapshot/", views.take_snapshot, name="take-snapshot"),
-
+    path("take-snapshot/", views.take_snapshot_view, name="take-snapshot"),
 ]

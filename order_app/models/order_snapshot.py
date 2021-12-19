@@ -12,7 +12,7 @@ class OrderSnapshot(models.Model):
     hash_field = models.CharField(max_length=32)
     data = models.BinaryField(max_length=32 * 1024)  # 32 KiB
 
-    def __repr__(self):  # FIXME: str?
+    def __str__(self):
         """Verbose name of a database record to display in Django admin site."""
         local_time = timezone.localtime(self.lookup_time).strftime(
             self.time_format

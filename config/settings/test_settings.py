@@ -19,3 +19,4 @@ MEDIA_URL = '/media/'  # FIXME: not used
 STATIC_DIR = BASE_DIR / "static"
 STATICFILES_DIRS = [STATIC_DIR]
 STATIC_URL = '/static/'
+TIME_ZONE = 'Etc/GMT-3'

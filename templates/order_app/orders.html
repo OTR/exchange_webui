@@ -62,8 +62,8 @@
                     {% else %}
                 <tr>
                     {% endif %}
-                    <td>{{ order.date|date:"d.m.Y" }} {{ order.date|time:"H:i:s"
-                        }}
+                    <td>{{ order.date|date:"d.m.Y" }}
+                        {{ order.date|time:"H:i:s" }}
                     </td>
                     <td>{{ order.orderId }}</td>
                     <td>{{ order.amount }}</td>

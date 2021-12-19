@@ -6,7 +6,7 @@ import logging
 
 from django.views.generic import TemplateView
 
-from .fetch import fetch, format_orders
+from services.fetch import fetch, format_orders
 
 
 logger = logging.getLogger(__name__)

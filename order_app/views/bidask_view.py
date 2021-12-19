@@ -5,9 +5,6 @@ import logging
 
 from django.views.generic import TemplateView
 
-# from ..views.fetcher import foo
-# from ..models import BestPriceLTV  # FIXME: from models.best_price import ...
-
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
