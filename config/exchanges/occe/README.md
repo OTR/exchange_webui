@@ -172,3 +172,70 @@ Body:
   ]
 }
 ```
+
+## Thoughts on:
+
+### Implementation active orders interface
+
+API of this exchange is changing constantly, within a year they switched 
+from API v2 to v3, so to provide stability of my interfaces I would 
+implement methods from v2 and v3 both. Get active orders API v2 was like this:
+
+```json
+{
+    "result": "success",
+    "buyOrders": [
+        {
+            "orderId":"4463",
+            "type":"buy",
+            "amount":30.9869281,
+            "price":0.00000306,
+            "date":"1585964082710",
+            "pair":"ltv_btc",
+            "total":0.00009482,
+            "label":""
+        },
+        {
+            "orderId":"0",
+            "type":"buy",
+            "amount":103,
+            "price":0.0000028,
+            "date":"0",
+            "pair":"",
+            "total":0.0002884,
+            "label":"buy"
+        },
+        ...
+    ],
+    "sellOrders": [
+        {
+            "orderId":"2489",
+            "type":"sell",
+            "amount":2,
+            "price":1,
+            "date":"1582629903377",
+            "pair":"ltv_btc",
+            "total":2,
+            "label":""
+        },
+        ...
+    ]
+}
+```
+
+Seems like "orderId" is auto incremented, but when admins handy modify database
+it takes default value as 0.
+and "label" field is not usually set when order is placed through web 
+interface,
+usually it is an empty string, but could be "sell" or "buy"
+
+By these red flags I distinguished suspicious orders, that were obviously 
+placed by exchange admins, bypassing web interface of API calls.
+
+Back to the Implementation,
+
+comparing with of the same API call but version 3, JSON response body has 
+lost two keys, which is "label" and "orderId", but they remain in my 
+interface to provide back compatibility. "date" field in v2 was 13 digits 
+(with millis) but in v3 it is just 10 digits, so obviously we need to 
+declare the greater type to fit both versions of a date.

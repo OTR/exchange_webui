@@ -20,3 +20,8 @@ STATIC_DIR = BASE_DIR / "static"
 STATICFILES_DIRS = [STATIC_DIR]
 STATIC_URL = '/static/'
 TIME_ZONE = 'Etc/GMT-3'
+
+# USER DEFINED SETTINGS (NOT DJANGO's)
+
+# Which exchange API make calls to
+_USE_EXCHANGE = "config.exchanges.occe"

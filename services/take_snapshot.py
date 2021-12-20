@@ -3,6 +3,8 @@
 """
 import logging
 
+from django.conf import settings
+from importlib import import_module
 from order_app.models.order_snapshot import OrderSnapshot
 from services.fetch import fetch, validate_order_book
 
@@ -10,11 +12,13 @@ from services.fetch import fetch, validate_order_book
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
+PUBLIC_API_CONF = import_module(f"{settings._USE_EXCHANGE}.public_api")
+
 
 def take_snapshot():
     """"""
-    # orders_url = "https://www.occe.io/api/v2/public/orders/ltv_usdt"
-    orders_url = "https://api.occe.io/public/orders/ltv_usdt"
+    pattern = PUBLIC_API_CONF.ACTIVE_ORDERS_URL_PATTERN
+    orders_url = pattern.format(pair="ltv_usdt")
     raw_snapshot = fetch(orders_url)
     if raw_snapshot is not None:
         snapshot = validate_order_book(raw_snapshot)
