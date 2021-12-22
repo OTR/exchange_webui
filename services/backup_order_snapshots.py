@@ -3,11 +3,11 @@
 """
 import os
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.test_settings")
 import django
 
 django.setup()
-from orders.models import OrderSnapshot
+from order_app.models import OrderSnapshot
 
 
 class Row(object):

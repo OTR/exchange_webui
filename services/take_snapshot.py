@@ -23,7 +23,7 @@ def take_snapshot():
     if raw_snapshot is not None:
         snapshot = validate_order_book(raw_snapshot)
         if snapshot is None:
-            logger.info("Line 108:")
+            logger.info("Validate returned None")
         else:
             _hash = snapshot["_hash"]
             rows_count = OrderSnapshot.objects.count()
@@ -35,6 +35,7 @@ def take_snapshot():
             elif rows_count > 0:
                 last_snapshot = OrderSnapshot.objects.order_by("-lookup_time",
                                                                "-pk").first()
+                last_hash = last_snapshot.hash_field
                 if last_hash != _hash:
                     new_row = OrderSnapshot.objects.create(
                         hash_field=snapshot["_hash"],

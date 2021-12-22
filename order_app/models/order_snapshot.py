@@ -27,7 +27,6 @@ class OrderSnapshot(models.Model):
 
     def __str__(self):
         """"""
-        # return defaultfilters.date(self.lookup_time, "d.m.Y H:i:s")
         local_time = timezone.localtime(self.lookup_time).strftime(
             "%d.%m.%Y %H:%M:%S"
         )
@@ -50,35 +49,37 @@ class OrderSnapshot(models.Model):
         json_obj = json.loads(self.data)
         buy_orders = json_obj["buyOrders"]
         sell_orders = json_obj["sellOrders"]
-        state, b_created = OrderBookState.objects.get_or_create(
-            lookup_time=self.lookup_time)
-        if b_created:
-            for _type, _set in (("sell", sell_orders), ("buy", buy_orders)):
+        state, is_created = OrderBookState.objects.get_or_create(
+            lookup_time=self.lookup_time
+        )
+        if is_created:
+            for order_type, _set in (("sell", sell_orders), ("buy", buy_orders)):
                 for row in _set:
                     date_as_int = float(
                         "{}.{}".format(row["date"][:10], row["date"][10:]))
                     date = datetime.fromtimestamp(date_as_int)
-                    if _type == "sell":
-                        _Model = SellOrder
+                    if order_type == "sell":
+                        use_model = SellOrder
                     else:
-                        _Model = BuyOrder
-                    obj, created = _Model.objects.get_or_create(
+                        use_model = BuyOrder
+                    obj, is_created = use_model.objects.get_or_create(
                         amount=row["amount"],
                         date=date,
                         label=row["label"],
                         order_id=row["orderId"],
                         price=row["price"],
                         total=row["total"])
-                    if created:
-                        if _type == "sell":
+                    if is_created:
+                        if order_type == "sell":
                             state.sell_orders.add(obj)
                         else:
                             state.buy_orders.add(obj)
                     else:
-                        LOGGER.info("Cannot create Order coz already created")
+                        LOGGER.info("Cannot create Order coz already is_created")
         else:
-            LOGGER.info("Cannot create coz OrderBookState is already created")
+            LOGGER.info(
+                "Cannot create a row because a row with given look up time "
+                "is already created"
+            )
 
         super().save(*args, **kwargs)
-
-

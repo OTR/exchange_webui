@@ -14,5 +14,5 @@ class Task(models.Model):
     body = models.TextField()
 
     def __str__(self):
-        """"""
+        """A verbose name to display on Django admin site."""
         return self.title

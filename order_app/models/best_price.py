@@ -11,7 +11,7 @@ LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel(logging.INFO)
 
 
-class BestPriceLTV(models.Model):
+class BestPrice(models.Model):
     """
     A model to keep best sell and buy orders at lookup time.
 
@@ -46,22 +46,28 @@ class BestPriceLTV(models.Model):
         return f"{local_time} {hash_field}"
 
     def hash_as_hex(self):
-        """Return hash_field represented as hexadecimal number."""
+        """Return `hash_field` represented as hexadecimal number."""
         return self.hash_field
 
     def get_change(self):
-        """"""
-        # if self.id == 1:
-        #     sell_change = 0
-        #     buy_change = 0
-        # elif self.id > 1:
-        #     previous_row = BestPriceLTV.objects.get(id=self.id-1)
-        #     sell_change = self.best_sell - previous_row.best_sell
-        #     buy_change = self.best_buy - previous_row.best_buy
-        # return sell_change, buy_change
-        pass
+        """
+        Check if the best sell order and the best buy order has changed,
+        if so return the difference between previous and current the best
+        sell/buy orders.
+        """
+        if self.id == 1:
+            sell_change = 0.0
+            buy_change = 0.0
+        elif self.id > 1:
+            previous_row = BestPrice.objects.get(id=self.id-1)
+            sell_change = float(self.best_sell) - float(previous_row.best_sell)
+            buy_change = float(self.best_buy) - float(previous_row.best_buy)
+
+        return sell_change, buy_change
 
     def save(self, *args, **kwargs):
-        """"""
-        # self.sell_change, self.buy_change = self.get_change()
-        super(BestPriceLTV, self).save(*args, **kwargs)
+        """
+        Calculate changing of the best sell/buy prices before saving a row.
+        """
+        self.sell_change, self.buy_change = self.get_change()
+        super(BestPrice, self).save(*args, **kwargs)

@@ -6,7 +6,7 @@ from random import randint
 from django.test import TestCase
 from django.urls import reverse
 
-from .models import BestPriceLTV
+from .models import BestPrice
 
 
 class BestPriceLTVModelTest(TestCase):
@@ -21,12 +21,12 @@ class BestPriceLTVModelTest(TestCase):
             best_sell = randint(mean,price_range[1])  # From middle to high
             best_buy = randint(price_range[0], mean)  # From low to middle
             # TODO: refresh seed
-            BestPriceLTV.objects.create(best_sell=best_sell,
-                                        best_buy=best_buy)
+            BestPrice.objects.create(best_sell=best_sell,
+                                     best_buy=best_buy)
 
     def test_price_within_range(self):
         """"""
-        for price in BestPriceLTV.objects.all():
+        for price in BestPrice.objects.all():
             self.assertGreater(price.best_sell, price.best_buy)
 
 

@@ -3,14 +3,16 @@
 """
 import hashlib
 import hmac
+from importlib import import_module
+from urllib.request import urlopen
+
 import requests
 
 import config
 
-
 PRIV_KEY = config.PRIV_KEY
 PUB_KEY = config.PUB_KEY
-
+PUBLIC_API_CONF = import_module(f"{settings._USE_EXCHANGE}.public_api")
 
 class TradeBot(object):
     """"""
@@ -33,7 +35,8 @@ class TradeBot(object):
             pass  # params.update()
 
         verbose_params = "&".join(
-            ["{}={}".format(key, value) for (key, value) in params.items()])
+            ("{}={}".format(key, value) for (key, value) in params.items())
+        )
 
         msg = "{HTTP_verb}|{URI}|{verbose_params}".format(
             HTTP_verb=HTTP_verb,
@@ -68,12 +71,11 @@ class TradeBot(object):
 
     def _get_timestamp(self):
         """"""
-
-        resp = requests.get(self.time_url)
+        resp = urlopen(self.time_url)
         if resp.status_code == 200:
-            return resp.text
+            return resp.read()
         else:
-            raise Error("Fuck you")
+            raise UserWarning("Response code is not 200")
 
     def get_user_info(self):
         """"""
@@ -81,34 +83,28 @@ class TradeBot(object):
         uri = "/api/v2/user/info"
         access_key = self.pub_key
         timestamp = self._get_timestamp()
-        # timestamp = str(int(round(time.time() * 1000)))
 
         msg = self._combine_msg(http_method, uri, timestamp,
                                 optional_params=None)
-        print(msg)
         signature = self._get_signature(msg)
-        print(signature)
         # signature = self.create_sha256_signature(msg)
-        # print(signature)
         # signature = self.pycryptodome_signature(msg)
-        # print(signature)
-        resp = requests.get(self.user_info_url,
-                            params={"access_key": access_key,
-                                    "signature": signature,
-                                    "timestamp": timestamp,
-                                    }
-                            )
+        resp = urlopen(self.user_info_url,
+                       params={"access_key": access_key,
+                               "signature": signature,
+                               "timestamp": timestamp,
+                               }
+                       )
 
-        # print(resp.status_code)
         if resp.status_code == 200:
             print("OK")
-            print(resp.text)
+            print(resp.read())
             print(resp.json())
         elif resp.status_code == 401:
-            print(resp.text)
+            print(resp.read())
             print(resp.PUBLIC_INFO_LTV_BTC)
         else:
-            print("SOMETHING")  # FIXME: raise error
+            raise UserWarning("Unknown status code")
 
     def get_my_open_orders(self):
         """"""

@@ -25,15 +25,13 @@ class OrderBookState(models.Model):
 
     def get_buy_orders_as_str(self):
         """"""
-        return "\n".join(
-            [row.__str__() for row in self.buy_orders.order_by("-price")]
-        )
+        rows = (row.__str__() for row in self.buy_orders.order_by("-price"))
+        return "\n".join(rows)
 
     def get_sell_orders_as_str(self) -> str:
         """"""
-        return "\n".join(
-            [row.__str__() for row in self.sell_orders.order_by("-price")]
-        )
+        rows = (row.__str__() for row in self.sell_orders.order_by("-price"))
+        return "\n".join(rows)
 
     def get_order_book_state_change(self) -> list[str]:
         """"""
@@ -44,23 +42,26 @@ class OrderBookState(models.Model):
             # self.sell_orders.remove(*list(second.sell_orders.all()))
             # curr_orders = self.sell_orders.all()
             # prev_orders = previous_row.sell_orders.all()
-            sell_got = SellOrder.objects.filter(
-                orderbookstate__in=(self,)).exclude(orderbookstate__in=(previous_row,))
-            sell_lost = SellOrder.objects.filter(
-                orderbookstate__in=(previous_row,)).exclude(orderbookstate__in=(self,))
-            buy_got = BuyOrder.objects.filter(
-                orderbookstate__in=(self,)).exclude(orderbookstate__in=(previous_row,))
-            buy_lost = BuyOrder.objects.filter(
-                orderbookstate__in=(previous_row,)).exclude(orderbookstate__in=(self,))
+            open_sell_orders = SellOrder.objects.filter(
+                orderbookstate__in=(self,)
+            ).exclude(orderbookstate__in=(previous_row,))
+            closed_sell_orders = SellOrder.objects.filter(
+                orderbookstate__in=(previous_row,)
+            ).exclude(orderbookstate__in=(self,))
+            open_buy_orders = BuyOrder.objects.filter(
+                orderbookstate__in=(self,)
+            ).exclude(orderbookstate__in=(previous_row,))
+            closed_buy_orders = BuyOrder.objects.filter(
+                orderbookstate__in=(previous_row,)
+            ).exclude(orderbookstate__in=(self,))
 
             local_time = timezone.localtime(self.lookup_time).strftime(
                 '%d.%m.%Y %H:%M:%S'
             )
-            # I'm {self.id} and trying to compare to {previous_row.id}
             msgs.append(f"{local_time}")
             # 0 - price; 1 - amount; 2 - date
-            if buy_lost:
-                for bl in buy_lost:
+            if closed_buy_orders:
+                for bl in closed_buy_orders:
                     if bl.date == self.start_epoch:
                         admin = "(Админский)"
                     else:
@@ -68,8 +69,8 @@ class OrderBookState(models.Model):
 
                     msgs.append(
                         f"Снят оредер на покупку {bl.amount} по цене {bl.price} {admin}")
-            if buy_got:
-                for bg in buy_got:
+            if open_buy_orders:
+                for bg in open_buy_orders:
                     if bg.date == self.start_epoch:
                         admin = "(Админский)"
                     else:
@@ -77,8 +78,8 @@ class OrderBookState(models.Model):
 
                     msgs.append(
                         f"Появился оредер на покупку {bg.amount} по цене {bg.price} {admin}")
-            if sell_lost:
-                for sl in sell_lost:
+            if closed_sell_orders:
+                for sl in closed_sell_orders:
                     if sl.date == self.start_epoch:
                         admin = "(Админский)"
                     else:
@@ -86,8 +87,8 @@ class OrderBookState(models.Model):
 
                     msgs.append(
                         f"Снят оредер на продажу {sl.amount} по цене {sl.price} {admin}")
-            if sell_got:
-                for sg in sell_got:
+            if open_sell_orders:
+                for sg in open_sell_orders:
                     if sg.date == self.start_epoch:
                         admin = "(Админский)"
                     else:

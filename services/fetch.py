@@ -146,7 +146,6 @@ def format_orders(orders: dict, is_buy_order: bool = False) -> list:
                     key=lambda _order: float(_order["price"]),
                     reverse=is_buy_order
                     )
-    # (  order["price"], , ) #
     total_cap = 0.0
     temp_cap = 0.0
     take = 10

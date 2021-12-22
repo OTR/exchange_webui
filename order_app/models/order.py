@@ -24,8 +24,8 @@ class Order(models.Model):
     def __str__(self):
         """"""
         local_date = timezone.localtime(self.date).strftime("%d.%m.%Y %H:%M:%S")
-        price = int(self.price) * 10 ** 8
-        return f"{self.amount} LTV @ {price} [{local_date}]"
+        price = int(self.price)
+        return f"{self.amount} Coins @ {price} [{local_date}]"
 
 
 class BuyOrder(Order):

@@ -8,13 +8,14 @@ from time import sleep
 from urllib.request import urlopen
 
 
+
 PAIRS = {
     "LB": {"slug": "ltv_btc", "module": 8},
     "LD": {"slug": "ltv_doge", "module": 0},
     "DB": {"slug": "doge_btc", "module": 8}
 }
 
-MAILTO = "crotosphera@gmail.com"
+MAILTO = ""
 
 
 def get(pair, module=0):
@@ -27,8 +28,11 @@ def get(pair, module=0):
     last_price = int(coin_info["lastPrice"] * 10 ** module)
     highest_buy = int(coin_info["highestBuy"] * 10 ** module)
     lowest_sell = int(coin_info["lowestSell"] * 10 ** module)
-    curr_pair_data = {"last_price": last_price, "highest_buy": highest_buy,
-                      "lowest_sell": lowest_sell}
+    curr_pair_data = {
+        "last_price": last_price,
+        "highest_buy": highest_buy,
+        "lowest_sell": lowest_sell
+    }
     return curr_pair_data
 
 
