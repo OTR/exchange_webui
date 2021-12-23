@@ -5,24 +5,33 @@ import hashlib
 import hmac
 from importlib import import_module
 from urllib.request import urlopen
+from django.conf import settings
 
 import requests
 
-import config
 
-PRIV_KEY = config.PRIV_KEY
-PUB_KEY = config.PUB_KEY
-PUBLIC_API_CONF = import_module(f"{settings._USE_EXCHANGE}.public_api")
+PRIV_KEY = settings.PRIV_KEY
+PUB_KEY = settings.PUB_KEY
+EXCHANGE_PUBLIC_API_CONF = import_module(
+    f"{settings._USE_EXCHANGE}.public_api"
+)
+EXCHANGE_PRIVATE_API_CONF = import_module(
+    f"{settings._USE_EXCHANGE}.private_api"
+)
+
+SERVER_TIME_URL = EXCHANGE_PUBLIC_API_CONF.SERVER_TIME_URL
+USER_INFO_URL = EXCHANGE_PRIVATE_API_CONF.USER_INFO_URL
+
 
 class TradeBot(object):
     """"""
-    time_url = "https://www.occe.io/api/v1/tradeview/time"
-    user_info_url = "https://www.occe.io/api/v2/user/info"
+    time_url = SERVER_TIME_URL
+    user_info_url = USER_INFO_URL
 
     def __init__(self, priv_key, pub_key):
         """"""
-        self.priv_key = priv_key
-        self.pub_key = pub_key
+        self.priv_key = PRIV_KEY
+        self.pub_key = PUB_KEY
 
     def _combine_msg(self, HTTP_verb, URI, timestamp, optional_params):
         """"""
@@ -96,34 +105,26 @@ class TradeBot(object):
                                }
                        )
 
-        if resp.status_code == 200:
-            print("OK")
-            print(resp.read())
-            print(resp.json())
+        if resp.code == 200:
+            pass
         elif resp.status_code == 401:
-            print(resp.read())
-            print(resp.PUBLIC_INFO_LTV_BTC)
+            pass
         else:
             raise UserWarning("Unknown status code")
 
-    def get_my_open_orders(self):
+    def get_user_open_orders_by_pair(self):
         """"""
-        URL = "https://www.occe.io/api/v2/user/orders/open/ltv_btc"
-        HTTP_verb = "GET"
-        URI = "/api/v2/user/orders/open/ltv_btc"
+        HTTP_method = "GET"
+        URL = USER_OPEN_ORDERS_BY_PAIR_PATTERN.format(pair)
         access_key = self.pub_key
         timestamp = self._get_timestamp()
 
-        msg = self._combine_msg(HTTP_verb, URI, timestamp, optional_params=None)
-        print(msg)
+        msg = self._combine_msg(HTTP_method, URI, timestamp, optional_params=None)
         signature = self._get_signature(msg)
-        print(signature)
         resp = requests.get(URL, params={"access_key": access_key,
                                          "signature": signature,
                                          "timestamp": timestamp,
                                          })
-        print(resp.status_code)
-        print(resp.json())
 
     def get_open_orders(self):
         """"""
@@ -134,7 +135,6 @@ class TradeBot(object):
         # if json_obj["result"] == "success"
         buy_orders = json_obj["buyOrders"]
         sell_orders = json_obj["sellOrders"]
-        print(buy_orders)
 
 
 if __name__ == "__main__":
