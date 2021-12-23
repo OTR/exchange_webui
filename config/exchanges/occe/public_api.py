@@ -1,6 +1,6 @@
 """
 Constants to combine requests to public API
-Last Modified: 20.12.2021
+Last Modified: 23.12.2021
 """
 
 # Common part of each final URL
@@ -25,3 +25,7 @@ ACTIVE_ORDERS_QUERY = "/public/orders/"
 
 ACTIVE_ORDERS_URL_PATTERN = BASE_URL + ACTIVE_ORDERS_QUERY + "{pair}"
 # ______________________________________________________________________________
+# Get server time. Used for signature creation
+SERVER_TIME_QUERY = "/public/tradeview/time"
+
+SERVER_TIME_URL = BASE_URL + SERVER_TIME_QUERY
