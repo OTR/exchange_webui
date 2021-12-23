@@ -23,7 +23,7 @@ class OrderSnapshot(models.Model):
     # lookup_time = models.DateTimeField("lookup time", auto_now_add=True)
     lookup_time = models.DateTimeField("lookup time", default=timezone.now)
     hash_field = models.CharField(max_length=32)
-    data = models.BinaryField(max_length=32 * 1024)  # 32 Kb
+    data = models.BinaryField(max_length=32 * 1024)  # 32 KiB
 
     def __str__(self):
         """"""

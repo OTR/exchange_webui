@@ -25,6 +25,5 @@ class SnapshotDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         pretty_dict = pformat(json.loads(context["object"].data))
         context["object"].pretty = pretty_dict
-        # do something
 
         return context
