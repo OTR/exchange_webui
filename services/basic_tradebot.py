@@ -10,13 +10,13 @@ from django.conf import settings
 import requests
 
 
-PRIV_KEY = settings.PRIV_KEY
-PUB_KEY = settings.PUB_KEY
+PRIV_KEY = settings.U_PRIV_KEY
+PUB_KEY = settings.U_PUB_KEY
 EXCHANGE_PUBLIC_API_CONF = import_module(
-    f"{settings._USE_EXCHANGE}.public_api"
+    f"{settings.U_USE_EXCHANGE}.public_api"
 )
 EXCHANGE_PRIVATE_API_CONF = import_module(
-    f"{settings._USE_EXCHANGE}.private_api"
+    f"{settings.U_USE_EXCHANGE}.private_api"
 )
 
 SERVER_TIME_URL = EXCHANGE_PUBLIC_API_CONF.SERVER_TIME_URL

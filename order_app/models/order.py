@@ -6,7 +6,10 @@ from django.utils import timezone
 
 
 class Order(models.Model):
-    """"""
+    """
+    A base class for both Buy and Sell orders. Needed to separate orders
+    by their type into two tables to provide database normalization.
+    """
     amount = models.DecimalField(max_digits=14, decimal_places=8)
     date = models.DateTimeField()
     label = models.CharField(max_length=127)

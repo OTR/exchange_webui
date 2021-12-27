@@ -12,7 +12,7 @@ from services.fetch import fetch, validate_order_book
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-PUBLIC_API_CONF = import_module(f"{settings._USE_EXCHANGE}.public_api")
+PUBLIC_API_CONF = import_module(f"{settings.U_USE_EXCHANGE}.public_api")
 
 
 def take_snapshot():

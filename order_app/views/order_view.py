@@ -13,7 +13,7 @@ from services.fetch import fetch, format_orders
 
 LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel(logging.INFO)
-PUBLIC_API_CONF = import_module(f"{settings._USE_EXCHANGE}.public_api")
+PUBLIC_API_CONF = import_module(f"{settings.U_USE_EXCHANGE}.public_api")
 
 
 class OrderView(TemplateView):

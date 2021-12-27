@@ -1,5 +1,7 @@
 """
 Concrete production settings for `pythonanywhere.com`
+
+Variables with leading underscore mean user defined settings, not Django's
 """
 import os
 
