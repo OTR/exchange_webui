@@ -6,6 +6,8 @@ from django.db import models
 
 class Task(models.Model):
     """
+    Not Implemented yet.
+
     A model that contains backend tasks for a certain user,
     that desire to complete them automatically.
     """

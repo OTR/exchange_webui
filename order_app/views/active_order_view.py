@@ -16,12 +16,14 @@ LOGGER.setLevel(logging.INFO)
 PUBLIC_API_CONF = import_module(f"{settings.U_USE_EXCHANGE}.public_api")
 
 
-class OrderView(TemplateView):
-    """"""
+class ActiveOrderView(TemplateView):
+    """
+    A view to display Active Orders placed in an order book by given trade pair.
+    """
     template_name = "order_app/orders.html"
 
     def get_context_data(self, **kwargs):
-        """"""
+        """TODO: move JSON parsing into services module."""
         context = super().get_context_data(**kwargs)
         pattern = PUBLIC_API_CONF.ACTIVE_ORDERS_URL_PATTERN
         orders_url = pattern.format(pair="ltv_usdt")

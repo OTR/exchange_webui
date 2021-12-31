@@ -13,12 +13,12 @@ class BestPriceLTVModelTest(TestCase):
     """"""
 
     def setUp(self):
-        """Fill in our test database's table"""
+        """Fill in test database's table."""
         price_range = (300, 900)  # Spread for test set
         # Get arithmetic mean value
         mean = int((price_range[1] - price_range[0]) / 2)
         for i in range(40):
-            best_sell = randint(mean,price_range[1])  # From middle to high
+            best_sell = randint(mean, price_range[1])  # From middle to high
             best_buy = randint(price_range[0], mean)  # From low to middle
             # TODO: refresh seed
             BestPrice.objects.create(best_sell=best_sell,
@@ -32,10 +32,6 @@ class BestPriceLTVModelTest(TestCase):
 
 class SnapshotViewTest(TestCase):
     """"""
-
-    def setUp(self):
-        """"""
-        pass
 
     def test_view_url_exists_at_proper_location(self):
         """"""

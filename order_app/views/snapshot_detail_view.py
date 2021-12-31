@@ -21,6 +21,8 @@ class SnapshotDetailView(DetailView):
         """
         TODO: field lookup and formatting should be moved into
          `get_pretty_dict` model method, which is not implemented yet.
+
+         Display JSON response as text.
         """
         context = super().get_context_data(**kwargs)
         pretty_dict = pformat(json.loads(context["object"].data))

@@ -10,7 +10,7 @@ from django.db.models import DateTimeField
 from django.utils import timezone
 
 
-DATE_FORMAT = settings.U_DATE_FORMAT
+DATE_FORMAT = settings.U_DATETIME_FORMAT
 ADMIN_ORDER = settings.U_ADMIN_ORDER
 VERBOSE_REPORT_PATTERNS = settings.U_VERBOSE_REPORT_PATTERS
 

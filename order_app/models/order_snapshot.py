@@ -7,6 +7,7 @@ from datetime import datetime
 
 from django.db import models
 from django.utils import timezone
+from django.conf import settings
 
 from ..models import BuyOrder, OrderBookState, SellOrder
 
@@ -25,26 +26,34 @@ class OrderSnapshot(models.Model):
     hash_field = models.CharField(max_length=32)
     data = models.BinaryField(max_length=32 * 1024)  # 32 KiB
 
-    def __str__(self):
-        """"""
+    def __str__(self) -> str:
+        """
+        Verbose name of a database record to display in Django admin site.
+        Consists of `lookup_time` (the moment at which API request was produced)
+        and a `hash_field` which is a result of md5 hashing function over
+        a raw JSON response.
+        """
         local_time = timezone.localtime(self.lookup_time).strftime(
-            "%d.%m.%Y %H:%M:%S"
+            settings.U_DATETIME_FORMAT
         )
         return "{} {}".format(local_time, self.hash_field)
 
-    def hash_as_hex(self):
+    def hash_as_hex(self) -> str:
         """Return _hash field represented as hexadecimal representation."""
         return self.hash_field
 
     class Meta:
-        """"""
+        """
+        Return table records in descend order by their primary key when
+        making ORM requests.
+        """
         ordering = ["-id"]
 
-    def data_as_string(self):
+    def data_as_string(self) -> str:
         """Return data (JSON response) as string."""
         return self.data.decode("UTF-8")
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs) -> None:
         """"""
         json_obj = json.loads(self.data)
         buy_orders = json_obj["buyOrders"]

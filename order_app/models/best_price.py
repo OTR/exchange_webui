@@ -5,6 +5,7 @@ import logging
 
 from django.db import models
 from django.utils import timezone
+from django.conf import settings
 
 
 LOGGER = logging.getLogger(__name__)
@@ -33,13 +34,21 @@ class BestPrice(models.Model):
     data = models.BinaryField(max_length=32 * 1024)  # 32 KiB
 
     class Meta:
-        """"""
+        """
+        Return table records in descend order by their primary key when
+        making ORM requests.
+        """
         ordering = ["-id"]
 
     def __str__(self):
-        """Verbose name of a database record to display in Django admin site."""
+        """
+        Verbose name of a database record to display in Django admin site.
+        Consists of `lookup_time` (the moment at which API request was produced)
+        and a `hash_field` which is a result of md5 hashing function over
+        a raw JSON response.
+        """
         local_time = timezone.localtime(self.lookup_time).strftime(
-            "%d.%m.%Y %H:%M:%S"
+            settings.U_DATETIME_FORMAT
         )
         hash_field = self.hash_field
 

@@ -11,7 +11,7 @@ from services.process_db_rows.order_book_state_report import ReportMaker
 from ..models import BuyOrder, SellOrder
 
 
-DATE_FORMAT = settings.U_DATE_FORMAT
+DATE_FORMAT = settings.U_DATETIME_FORMAT
 REPORT_HANDLER = settings.U_REPORT_HANDLER
 open_and_closed_orders = namedtuple("OpenNClosedOrders",
                                     [
@@ -42,7 +42,12 @@ class OrderBookState(models.Model):
         )
 
     def get_buy_orders_as_str(self) -> str:
-        """"""
+        """
+        Select all the sell orders which were placed in an order book with
+        descend ordering by price.
+
+        :return: their string representation as multiline string
+        """
         rows = (row.__str__() for row in self.buy_orders.order_by("-price"))
         return "\n".join(rows)
 
