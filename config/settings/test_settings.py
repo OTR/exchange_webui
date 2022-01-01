@@ -6,7 +6,7 @@ Variables with leading "U_" mean user defined settings, not Django's
 import os
 
 from .common_settings import *
-from services.process_db_rows.order_book_state_report import OCCEReportHandler
+
 
 
 ALLOWED_HOSTS = ["127.0.0.1"]
@@ -44,7 +44,7 @@ U_PUB_KEY = os.environ.get("OCCE_PUB_KEY")
 U_DATETIME_FORMAT = "%d.%m.%Y %H:%M:%S"
 
 # A class that defines OrderBookState change report combining
-U_REPORT_HANDLER = OCCEReportHandler
+U_REPORT_HANDLER = "OCCEReportHandler"
 
 # Patterns to produce a verbose report
 U_VERBOSE_REPORT_PATTERS = {

@@ -1,7 +1,8 @@
-{% extends 'orders/base.html' %}
+{% extends "order_app/base.html" %}
 {% block content %}
 
 <div class="container">
+  {% if not address %}
   <div class="row">
     <div class="col-12">
       <form id="faucet_form" method="POST"
@@ -12,14 +13,15 @@
         {{ field.help_text }}
         {{ field }}
         {% endfor %}
-        <input type="submit" name="submit" value="Register">
-        }
+        <input type="submit" class="btn btn-primary" name="submit"
+               value="Register">
       </form>
     </div>
   </div>
+  {% else %}
   <div class="row">
-    <div class="col-12">
-      <div class="card" style="width:400px">
+    <div class="col-12" style="padding-top: 65px">
+      <div class="card" style="width: 300px;">
         <img class="card-img-top"
              src="https://robohash.org/{{ address }}.png?set=set4"
              alt="Your hash avatar"/>
@@ -31,6 +33,7 @@
       </div>
     </div>
   </div>
+  {% endif %}
 </div>
 
 {% endblock %}

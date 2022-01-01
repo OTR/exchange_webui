@@ -30,11 +30,31 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'order_app:bid-ask' %}">Bid/Ask</a>
+        <a class="nav-link" href="{% url 'order_app:active-orders' %}">
+          Active Orders
+        </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'order_app:orders' %}">Orders</a>
+        <a class="nav-link" href="{% url 'order_app:bid-ask' %}">Bid|Ask</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'order_app:events' %}">Events</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'order_app:faucet' %}">Faucet</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'order_app:take-snapshot' %}">
+          Take Snapshot
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'order_app:tasks' %}">Tasks</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'order_app:snapshots' %}">Snapshots</a>
+      </li>
+
     </ul>
   </div>
 </nav>

@@ -56,17 +56,21 @@ class OrderSnapshot(models.Model):
     def save(self, *args, **kwargs) -> None:
         """"""
         json_obj = json.loads(self.data)
-        buy_orders = json_obj["buyOrders"]
-        sell_orders = json_obj["sellOrders"]
+        buy_orders = json_obj["data"]["buyOrders"]
+        sell_orders = json_obj["data"]["sellOrders"]
         state, is_created = OrderBookState.objects.get_or_create(
             lookup_time=self.lookup_time
         )
         if is_created:
             for order_type, _set in (("sell", sell_orders), ("buy", buy_orders)):
                 for row in _set:
-                    date_as_int = float(
-                        "{}.{}".format(row["date"][:10], row["date"][10:]))
-                    date = datetime.fromtimestamp(date_as_int)
+                    json_date = row.get("date", 0)  # FIXME: a hack, API is not
+                    # consistent
+                    quotient, reminder = divmod(json_date, 1000)
+                    date_as_float = float(
+                        "{}.{}".format(quotient, reminder)
+                    )
+                    date = datetime.fromtimestamp(date_as_float)
                     if order_type == "sell":
                         use_model = SellOrder
                     else:
@@ -74,8 +78,8 @@ class OrderSnapshot(models.Model):
                     obj, is_created = use_model.objects.get_or_create(
                         amount=row["amount"],
                         date=date,
-                        label=row["label"],
-                        order_id=row["orderId"],
+                        label="",  # FIXME:
+                        order_id=0,  # Fields from v2 API
                         price=row["price"],
                         total=row["total"])
                     if is_created:

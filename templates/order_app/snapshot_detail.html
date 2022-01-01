@@ -1,11 +1,15 @@
-{% extends "orders/base.html" %}
+{% extends "order_app/base.html" %}
 
 {% block title %}{{ book.title }}{% endblock %}
 
 {% block content %}
 <div class="container">
-  <div class="row">
+  <div class="row" style="padding-top: 65px;">
     <div class="col-12">
+        <a type="button" class="btn btn-primary"
+           href="{% url 'order_app:snapshots' %}">
+        Back to Snapshot List
+        </a>
       <p>{{ object.lookup_time }}</p>
       <p>{{ object.hash_as_hex }}</p>
       <h3 class="text-center">JSON representation</h3>

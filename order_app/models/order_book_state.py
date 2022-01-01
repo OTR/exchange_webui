@@ -7,12 +7,18 @@ from django.conf import settings
 from django.db import models
 from django.utils import timezone
 
+from importlib import import_module
 from services.process_db_rows.order_book_state_report import ReportMaker
 from ..models import BuyOrder, SellOrder
 
 
 DATE_FORMAT = settings.U_DATETIME_FORMAT
 REPORT_HANDLER = settings.U_REPORT_HANDLER
+# FIXME: Solve circular import
+if REPORT_HANDLER == "OCCEReportHandler":
+    from services.process_db_rows.order_book_state_report import \
+        OCCEReportHandler as REPORT_HANDLER
+
 open_and_closed_orders = namedtuple("OpenNClosedOrders",
                                     [
                                         "lookup_time",

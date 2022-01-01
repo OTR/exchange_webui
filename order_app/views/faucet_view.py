@@ -11,7 +11,7 @@ ADDRESS = "LeXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 
 class FaucetView(ListView):
     """
-    Not implemented yet.
+    Not implemented yet. TODO: Implement acquiring POST request
 
     A view to display our own faucet placed on the site.
 

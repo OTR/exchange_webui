@@ -1,4 +1,4 @@
-{% extends "orders/base.html" %}
+{% extends "order_app/base.html" %}
 
 {% block title %}Orders snapshots{% endblock %}
 
@@ -17,7 +17,8 @@
         <tbody>
         {% for snapshot in page_obj %}
         <tr>
-          <td>{{ snapshot.lookup_time|date:"d.m.Y" }}
+          <td>
+            {{ snapshot.lookup_time|date:"d.m.Y" }}
             {{snapshot.lookup_time|time:"H:i:s" }}
           </td>
           <td><a href="{% url 'order_app:snapshot-detail' snapshot.pk %}">
@@ -31,7 +32,7 @@
   <div class="row">
     <div class="col-12">
       <ul class="pagination pagination-lg justify-content-center pg-dark">
-        {# Previuos page block #}
+        {# Previous page block #}
         {% if page_obj.has_previous %}
         <li class="page-item">
           <a class="page-link"
@@ -43,8 +44,8 @@
         {% endif %}
 
         {# Current page block #}
-        <li class="page-item disabled"><a class="page-link" href="#">{{
-          page_obj.number }}/{{ page_obj.paginator.num_pages }}</a></li>
+        <li class="page-item disabled"><a class="page-link" href="#">
+          {{ page_obj.number }}/{{ page_obj.paginator.num_pages }}</a></li>
 
         {# Next page block #}
         {% if page_obj.has_next %}

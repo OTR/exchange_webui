@@ -5,9 +5,10 @@ two observations (nearest OrderBookState records).
 from datetime import datetime
 from typing import NamedTuple
 
-from django.conf import settings
 from django.db.models import DateTimeField
 from django.utils import timezone
+# FIXME: get rid of circular import
+from config.settings import test_settings as settings
 
 
 DATE_FORMAT = settings.U_DATETIME_FORMAT

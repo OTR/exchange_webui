@@ -22,7 +22,8 @@ $ python manage.py runserver
 # Setting up environment variables
 
 Application configuration in performed by creating a new settings file in 
-`/config/settings/` directory and extending `prod_settings.py` (`from .prod_settings import *`)
+`/config/settings/` directory and extending `prod_settings.py`
+ (`from .prod_settings import *`)
 
 Then you need to set relative path to your custom settings in OS environment 
 variable.

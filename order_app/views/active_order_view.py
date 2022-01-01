@@ -20,7 +20,7 @@ class ActiveOrderView(TemplateView):
     """
     A view to display Active Orders placed in an order book by given trade pair.
     """
-    template_name = "order_app/orders.html"
+    template_name = "order_app/active_orders.html"
 
     def get_context_data(self, **kwargs):
         """TODO: move JSON parsing into services module."""
