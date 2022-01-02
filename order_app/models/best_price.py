@@ -40,7 +40,7 @@ class BestPrice(models.Model):
         """
         ordering = ["-id"]
 
-    def __str__(self):
+    def __str__(self) -> str:
         """
         Verbose name of a database record to display in Django admin site.
         Consists of `lookup_time` (the moment at which API request was produced)
@@ -54,11 +54,11 @@ class BestPrice(models.Model):
 
         return f"{local_time} {hash_field}"
 
-    def hash_as_hex(self):
+    def hash_as_hex(self) -> str:
         """Return `hash_field` represented as hexadecimal number."""
         return self.hash_field
 
-    def get_change(self):
+    def get_change(self) -> tuple(float, float):
         """
         Check if the best sell order and the best buy order has changed,
         if so return the difference between previous and current the best
@@ -74,7 +74,7 @@ class BestPrice(models.Model):
 
         return sell_change, buy_change
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs) -> None:
         """
         Calculate changing of the best sell/buy prices before saving a row.
         """

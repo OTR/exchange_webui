@@ -7,11 +7,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.test_settings")
 import django
 
 django.setup()
-from order_app.models import OrderSnapshot, SellOrder, BuyOrder, OrderBookState
 import json
-from datetime import datetime
-from django.utils import timezone
-from hashlib import md5
 
 
 class Row(object):
@@ -19,7 +15,7 @@ class Row(object):
 
     rows = []
 
-    def __init__(self, index, db_row):
+    def __init__(self, index, db_row) -> None:
         """"""
         self.number = index
         self.id = db_row.id

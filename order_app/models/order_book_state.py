@@ -7,7 +7,6 @@ from django.conf import settings
 from django.db import models
 from django.utils import timezone
 
-from importlib import import_module
 from services.process_db_rows.order_book_state_report import ReportMaker
 from ..models import BuyOrder, SellOrder
 

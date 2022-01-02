@@ -5,9 +5,9 @@ import hashlib
 import hmac
 from importlib import import_module
 from urllib.request import urlopen
-from django.conf import settings
 
 import requests
+from django.conf import settings
 
 
 PRIV_KEY = settings.U_PRIV_KEY
@@ -119,7 +119,8 @@ class TradeBot(object):
         access_key = self.pub_key
         timestamp = self._get_timestamp()
 
-        msg = self._combine_msg(HTTP_method, URI, timestamp, optional_params=None)
+        msg = self._combine_msg(HTTP_method, URI, timestamp,
+                                optional_params=None)
         signature = self._get_signature(msg)
         resp = requests.get(URL, params={"access_key": access_key,
                                          "signature": signature,

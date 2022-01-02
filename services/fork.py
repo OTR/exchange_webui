@@ -8,7 +8,6 @@ from time import sleep
 from urllib.request import urlopen
 
 
-
 PAIRS = {
     "LB": {"slug": "ltv_btc", "module": 8},
     "LD": {"slug": "ltv_doge", "module": 0},
@@ -72,8 +71,7 @@ ____________________________
             mail_command = 'STR=$\'{body}\' && echo "$STR" | mail -s "OCCE Market" {mailto}'
             os.system(mail_command.format(mailto=MAILTO, body=mailbody))
         else:
-            pass  # mailbody += ">>>"
-    # print(mailbody)
+            pass
     else:
         with open(stored_data_file, "wb") as f1:
             pickle.dump(curr_data, f1)
@@ -82,4 +80,4 @@ ____________________________
 if __name__ == "__main__":
     # while True:
     check()
-# sleep(60)
+    # sleep(60)

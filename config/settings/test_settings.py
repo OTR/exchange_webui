@@ -8,7 +8,6 @@ import os
 from .common_settings import *
 
 
-
 ALLOWED_HOSTS = ["127.0.0.1"]
 DEBUG = True
 

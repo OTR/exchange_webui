@@ -8,7 +8,7 @@ from urllib.request import urlopen
 
 
 URL = "https://www.occe.io/api/v2/public/info/ltv_uah"
-MAILTO = "crotosphera@gmail.com"
+MAILTO = "no-reply@example.com"
 
 resp = urlopen(URL).read()
 price_json = json.loads(resp)
@@ -22,7 +22,7 @@ curr_data = {
     "highest_buy": highest_buy,
     "lowest_sell": lowest_sell
 }
-# print(curr_data)
+
 stored_data_file = os.path.join(os.getcwd(), "uah_prev_state.dat")
 if os.path.exists(stored_data_file):
     with open(stored_data_file, "rb") as f1:
@@ -37,7 +37,7 @@ lowest_sell:\t| {5}\t\t| {2}""".format(curr_data["last_price"],
                                        prev_data["last_price"],
                                        prev_data["highest_buy"],
                                        prev_data["lowest_sell"])
-        print(mailbody)
+
         shell_command = 'STR=$\'{body}\' && echo "$STR" | ' \
                         'mail -s "LTV/UAH" {mailto}'
         os.system(shell_command.format(mailto=MAILTO, body=mailbody))

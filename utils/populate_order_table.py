@@ -1,4 +1,11 @@
-def populate_order_table(self):
+"""
+
+"""
+from order_app.models import BuyOrder, SellOrder, OrderBookState
+from datetime import datetime
+
+
+def populate_order_table(self) -> None:
     """"""
     state, b_created = OrderBookState.objects.get_or_create(
         lookup_time=self.lookup_time)
@@ -12,10 +19,10 @@ def populate_order_table(self):
             )
             date = datetime.fromtimestamp(date_as_int)
             if order_type == "sell":
-                _Model = SellOrder
+                use_model = SellOrder
             else:
-                _Model = BuyOrder
-            obj, created = _Model.objects.get_or_create(
+                use_model = BuyOrder
+            obj, created = use_model.objects.get_or_create(
                 amount=row["amount"],
                 date=date,
                 label=row["label"],

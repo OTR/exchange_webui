@@ -2,20 +2,27 @@
 
 """
 import json
-from datetime import datetime
+import logging
 import os
+from collections import namedtuple
+from datetime import datetime
 from importlib import import_module
 from pathlib import Path
-from collections import namedtuple
 from typing import NamedTuple
-import logging
+from hashlib import md5
+
 from ..order_app.models import OrderSnapshot
 
-
 CONFIG_MODULE = import_module("config.settings.test_settings")
-BACKUP_DIR = CONFIG_MODULE.BACKUP_DIR
-raw_response = namedtuple("RawResponse", "lookup_time json_as_bytes json_obj "
-                                         "hash_field")
+BACKUP_DIR = CONFIG_MODULE.U_BACKUP_DIR
+raw_response = namedtuple(
+    "RawResponse", (
+        "lookup_time",
+        "json_as_bytes",
+        "json_obj",
+        "hash_field"
+    )
+)
 LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel(logging.INFO)
 
@@ -28,7 +35,7 @@ def load_files_from_dir(backup_dir: Path) -> list[NamedTuple]:
     if was requested.
     Lookup_time is used further as a model field
     """
-    #TODO: rewrite with iterator
+    # TODO: rewrite with iterator
     loaded_files = []
     for base_path, dirs, files in os.walk(backup_dir):
         for _file in files:
@@ -109,6 +116,7 @@ def get_hash_of_orders(json_at_time_objects: list) -> list:
         hash_field = md5(json.dumps(sorted_tuple).encode("UTF-8"))
 
     return json_with_hash_objects
+
 
 def create_datebase_row(json_hex_at_time_object: list) -> None:
     """"""

@@ -15,6 +15,6 @@ class Task(models.Model):
     author = models.ForeignKey("auth.User", on_delete=models.CASCADE)
     body = models.TextField()
 
-    def __str__(self):
+    def __str__(self) -> str:
         """A verbose name to display on Django admin site."""
         return self.title

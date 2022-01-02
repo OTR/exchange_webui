@@ -1,12 +1,9 @@
-from .bidask_view import *
-from .faucet_view import *
-from .index_view import *
-from .order_book_event_view import *
-from .active_order_view import *
-from .snapshot_detail_view import *
-from .snapshot_view import *
-from .take_snapshot_view import *
-from .task_view import *
-
-LOGGER = logging.getLogger(__name__)
-LOGGER.setLevel(logging.INFO)
+from .bidask_view import BidAskView
+from .faucet_view import FaucetView
+from .index_view import IndexView
+from .order_book_event_view import OrderBookEventView
+from .active_order_view import ActiveOrderView
+from .snapshot_detail_view import SnapshotDetailView
+from .snapshot_view import SnapshotView
+from .take_snapshot_view import take_snapshot_view
+from .task_view import TaskView

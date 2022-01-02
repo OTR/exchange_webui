@@ -12,7 +12,7 @@ from .models import BestPrice
 class BestPriceLTVModelTest(TestCase):
     """"""
 
-    def setUp(self):
+    def setUp(self) -> None:
         """Fill in test database's table."""
         price_range = (300, 900)  # Spread for test set
         # Get arithmetic mean value
@@ -24,7 +24,7 @@ class BestPriceLTVModelTest(TestCase):
             BestPrice.objects.create(best_sell=best_sell,
                                      best_buy=best_buy)
 
-    def test_price_within_range(self):
+    def test_price_within_range(self) -> None:
         """"""
         for price in BestPrice.objects.all():
             self.assertGreater(price.best_sell, price.best_buy)
@@ -33,17 +33,17 @@ class BestPriceLTVModelTest(TestCase):
 class SnapshotViewTest(TestCase):
     """"""
 
-    def test_view_url_exists_at_proper_location(self):
+    def test_view_url_exists_at_proper_location(self) -> None:
         """"""
         resp = self.client.get(reverse("snapshots"))
         self.assertEqual(resp.status_code, 200)
 
-    def test_view_url_by_name(self):
+    def test_view_url_by_name(self) -> None:
         """"""
         resp = self.client.get(reverse("snapshots"))
         self.assertEqual(resp.status_code, 200)
 
-    def test_view_uses_correct_template(self):
+    def test_view_uses_correct_template(self) -> None:
         """"""
         resp = self.client.get(reverse("snapshots"))
         self.assertEqual(resp.status_code, 200)

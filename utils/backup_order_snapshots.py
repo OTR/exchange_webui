@@ -24,7 +24,7 @@ class Row(object):
 
         self.rows.append(self)
 
-    def backup(self):
+    def backup(self) -> None:
         """"""
         with open(f"{self.lookup_time.timestamp()}.json", "wb") as f1:
             f1.write(self.data)

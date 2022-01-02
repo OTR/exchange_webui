@@ -9,6 +9,6 @@ class FaucetAddress(models.Model):
     address = models.CharField(max_length=64, unique=True)
     balance = models.IntegerField()
 
-    def __str__(self):
-        """"""
+    def __str__(self) -> str:
+        """Return user address as verbose name."""
         return self.address

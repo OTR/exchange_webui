@@ -22,7 +22,7 @@ class ActiveOrderView(TemplateView):
     """
     template_name = "order_app/active_orders.html"
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs) -> dict:
         """TODO: move JSON parsing into services module."""
         context = super().get_context_data(**kwargs)
         pattern = PUBLIC_API_CONF.ACTIVE_ORDERS_URL_PATTERN
