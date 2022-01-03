@@ -24,7 +24,7 @@ class OrderSnapshot(models.Model):
     # lookup_time = models.DateTimeField("lookup time", auto_now_add=True)
     lookup_time = models.DateTimeField("lookup time", default=timezone.now)
     hash_field = models.CharField(max_length=32)
-    data = models.BinaryField(max_length=32 * 1024)  # 32 KiB
+    raw_json = models.BinaryField(max_length=32 * 1024)  # 32 KiB
 
     def __str__(self) -> str:
         """
@@ -51,11 +51,11 @@ class OrderSnapshot(models.Model):
 
     def data_as_string(self) -> str:
         """Return data (JSON response) as string."""
-        return self.data.decode("UTF-8")
+        return self.raw_json.decode("UTF-8")
 
     def save(self, *args, **kwargs) -> None:
         """"""
-        json_obj = json.loads(self.data)
+        json_obj = json.loads(self.raw_json)
         buy_orders = json_obj["data"]["buyOrders"]
         sell_orders = json_obj["data"]["sellOrders"]
         state, is_created = OrderBookState.objects.get_or_create(

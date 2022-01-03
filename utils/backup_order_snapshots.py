@@ -20,7 +20,7 @@ class Row(object):
         self.id = db_row.id
         self.lookup_time = db_row.lookup_time
         self.hash_ = db_row.hash_
-        self.data = db_row.data
+        self.data = db_row.raw_json
 
         self.rows.append(self)
 

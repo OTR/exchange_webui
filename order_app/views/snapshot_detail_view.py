@@ -25,7 +25,7 @@ class SnapshotDetailView(DetailView):
          Display JSON response as text.
         """
         context = super().get_context_data(**kwargs)
-        pretty_dict = pformat(json.loads(context["object"].data))
+        pretty_dict = pformat(json.loads(context["object"].raw_json))
         context["object"].pretty = pretty_dict
 
         return context

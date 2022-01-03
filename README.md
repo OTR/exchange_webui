@@ -53,7 +53,7 @@ convention to name your variables starting with `U_`.
 
 `U_LOGIN` - your account login on the hosting
 
-#### MySQL settings (used by default)
+#### MySQL's settings (used by default)
 
 `U_DB_PASSWD` - the password from your database
 
@@ -65,9 +65,17 @@ convention to name your variables starting with `U_`.
 
 ...
 
-### Settings to for with OCCE exhange
+### Settings to for with OCCE exchange
 
 ...
+
+# Run tests
+
+```
+$ coverage run --source="." manage.py test
+$ coverage report
+$ coverage html
+```
 
 # SQLite viewer
 
@@ -87,6 +95,6 @@ $ sqlite_bro -h
 
 * get rid of [autoreload] logger
 
-* Rename `OrderSnapshot` model to `RawJsonResponseSomething` to reveal it's 
+* Rename `OrderSnapshot` model to `RawJsonResponseSomething` to reveal its 
   essence.
   

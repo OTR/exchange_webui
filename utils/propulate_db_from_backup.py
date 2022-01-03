@@ -134,7 +134,7 @@ def create_datebase_row(json_hex_at_time_object: list) -> None:
     else:
         # There is NO row with given unique hash
         obj.lookup_time = lookup_time
-        obj.data = data
+        obj.raw_json = data
         obj.save()
 
 

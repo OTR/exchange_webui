@@ -15,7 +15,7 @@ logger.setLevel(logging.INFO)
 PUBLIC_API_CONF = import_module(f"{settings.U_USE_EXCHANGE}.public_api")
 
 
-def take_snapshot():
+def take_active_orders_snapshot():
     """"""
     pattern = PUBLIC_API_CONF.ACTIVE_ORDERS_URL_PATTERN
     orders_url = pattern.format(pair="ltv_usdt")

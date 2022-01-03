@@ -2,6 +2,7 @@
 
 """
 import logging
+from decimal import Decimal
 
 from django.db import models
 from django.utils import timezone
@@ -17,21 +18,29 @@ class BestPrice(models.Model):
     A model to keep best sell and buy orders at lookup time.
 
     Where:
-     `data` is a raw json response in binary representation,
+     `raw_json` is a raw json response in binary representation,
      `hash_field` is a md5 hash, used for development purpose to make sure we
       don't duplicates of json data, should be removed in the future.
 
     Other fields are direct copies of JSON response keys.
     """
-    best_sell = models.DecimalField(max_digits=12, decimal_places=8)
-    best_buy = models.DecimalField(max_digits=12, decimal_places=8)
-    last_price = models.DecimalField(max_digits=12, decimal_places=8)
-    volume_24 = models.DecimalField(max_digits=14, decimal_places=8)
+    best_sell = models.DecimalField(
+        max_digits=12, decimal_places=8, null=False
+    )
+    best_buy = models.DecimalField(
+        max_digits=12, decimal_places=8, null=False
+    )
+    last_price = models.DecimalField(
+        max_digits=12, decimal_places=8, null=False
+    )
+    volume_24 = models.DecimalField(
+        max_digits=14, decimal_places=8, null=False
+    )
     lookup_time = models.DateTimeField("lookup time", default=timezone.now)
     sell_change = models.IntegerField()
     buy_change = models.IntegerField()
     hash_field = models.CharField(max_length=32)
-    data = models.BinaryField(max_length=32 * 1024)  # 32 KiB
+    raw_json = models.BinaryField(max_length=32 * 1024)  # 32 KiB
 
     class Meta:
         """
@@ -54,29 +63,30 @@ class BestPrice(models.Model):
 
         return f"{local_time} {hash_field}"
 
-    def hash_as_hex(self) -> str:
+    def get_hash_as_str(self) -> str:
         """Return `hash_field` represented as hexadecimal number."""
-        return self.hash_field
+        return str(self.hash_field)
 
-    def get_change(self) -> tuple(float, float):
+    def _get_change(self) -> tuple[Decimal, Decimal]:
         """
         Check if the best sell order and the best buy order has changed,
         if so return the difference between previous and current the best
         sell/buy orders.
         """
-        if self.id == 1:
-            sell_change = 0.0
-            buy_change = 0.0
+        if not self.id or self.id == 1:
+            sell_change = Decimal("0.0")
+            buy_change = Decimal("0.0")
         elif self.id > 1:
-            previous_row = BestPrice.objects.get(id=self.id-1)
-            sell_change = float(self.best_sell) - float(previous_row.best_sell)
-            buy_change = float(self.best_buy) - float(previous_row.best_buy)
+            # Get previous row
+            prev_row = BestPrice.objects.get(id=self.id-1)
+            sell_change = Decimal(self.best_sell) - Decimal(prev_row.best_sell)
+            buy_change = Decimal(self.best_buy) - Decimal(prev_row.best_buy)
 
-        return sell_change, buy_change
+        return (sell_change, buy_change)
 
     def save(self, *args, **kwargs) -> None:
         """
         Calculate changing of the best sell/buy prices before saving a row.
         """
-        self.sell_change, self.buy_change = self.get_change()
+        self.sell_change, self.buy_change = self._get_change()
         super(BestPrice, self).save(*args, **kwargs)
