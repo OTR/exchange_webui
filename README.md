@@ -86,3 +86,7 @@ $ sqlite_bro -h
 * rename `bootstrap.css` to `bootstrap-4.4.1.css`
 
 * get rid of [autoreload] logger
+
+* Rename `OrderSnapshot` model to `RawJsonResponseSomething` to reveal it's 
+  essence.
+  

@@ -3,7 +3,7 @@
 """
 import json
 import logging
-from abc import ABC, abstractmethod
+from abc import ABC
 from datetime import datetime
 from functools import wraps
 from hashlib import md5
