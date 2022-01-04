@@ -13,8 +13,8 @@ from urllib.parse import quote
 from urllib.request import urlopen, build_opener, OpenerDirector
 
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.INFO)
 USE_PROXY = False
 
 
@@ -51,12 +51,12 @@ def catch_http_error(func: Callable) -> Callable:
         except HTTPError as err:
             if err.code == 502:  # HTTP Error 502: Bad Gateway
                 # and USE_PROXY is True
-                logger.debug(err.args)
+                LOGGER.debug(err.args)
                 # TODO: Make another attempt
                 raise err
         except Exception as err:
-            logger.info(type(err))
-            logger.info(err.args)
+            LOGGER.info(type(err))
+            LOGGER.info(err.args)
             raise err
         else:
             return func_return
@@ -72,7 +72,7 @@ def fetch(url: str) -> bytes:
         data = resp.read()
         return data
     else:
-        logger.info(f"Response code is {resp.code}")
+        LOGGER.info(f"Response code is {resp.code}")
         raise UserWarning("Response code is not 200.")
 
 
@@ -101,10 +101,10 @@ class OCCEPublicAPIOpener(PublicAPIOpener):
             self.fetch = fetch
 
 
-def validate_order_book(data: bytes) -> dict:
-    """"""
+def validate_order_book(raw_json: bytes) -> dict:
+    """TODO: split into smaller functions."""
     try:
-        json_obj = json.loads(data)
+        json_obj = json.loads(raw_json)
         if json_obj['result'] == "success":
             sorted_lst = []
             orders = json_obj["data"]["buyOrders"] + json_obj["data"][
@@ -114,7 +114,7 @@ def validate_order_book(data: bytes) -> dict:
                     date = order["date"]
                 except KeyError as err:
                     price = order["price"]
-                    logger.info(f"Found admin order at {price}")
+                    LOGGER.info(f"Found admin order at {price}")
                     date = 0
                     admin = True
                 finally:
@@ -127,10 +127,10 @@ def validate_order_book(data: bytes) -> dict:
             sorted_tuple = tuple(sorted_lst)
             b_hash_tuple = md5(json.dumps(sorted_tuple).encode("UTF-8"))
 
-            return {"_hash": b_hash_tuple.hexdigest(), "data": data}
+            return {"_hash": b_hash_tuple.hexdigest(), "data": raw_json}
         else:
             log_msg = "JSON response is not succeed"
-            logger.info(log_msg)
+            LOGGER.info(log_msg)
             raise UserWarning(log_msg)
 
     except Exception as err:

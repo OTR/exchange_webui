@@ -3,7 +3,7 @@
 """
 from django.http import HttpResponse
 
-from services.take_active_orders_snapshot import take_active_orders_snapshot
+from services.fetcher.snapshot import take_active_orders_snapshot
 
 
 def take_snapshot_view(request):

@@ -1,6 +1,6 @@
 """
 Constants to combine requests to public API
-Last Modified: 23.12.2021
+Last Modified: 04.01.2022
 """
 
 # Common part of each final URL
@@ -18,7 +18,9 @@ TRADE_PAIRS = [
     "idna_usdt", "trx_uah", "bnb_uah", "sol_uah", "qrax_usdt", "pny_usdt",
     "matic_uah", "krb_trx", "ufo_trx"
 ]
-
+# ______________________________________________________________________________
+# A trade pair to make API requests about
+TRADE_PAIR = "skyr_trx"
 # ______________________________________________________________________________
 # Get active orders by a trade pair section
 ACTIVE_ORDERS_QUERY = "/public/orders/"
@@ -29,3 +31,11 @@ ACTIVE_ORDERS_URL_PATTERN = BASE_URL + ACTIVE_ORDERS_QUERY + "{pair}"
 SERVER_TIME_QUERY = "/public/tradeview/time"
 
 SERVER_TIME_URL = BASE_URL + SERVER_TIME_QUERY
+# ______________________________________________________________________________
+# Get trade history by given trade pair
+TRADE_HIST_BY_PAIR_QUERY = "/public/info/"
+
+TRADE_HISTORY_BY_PAIR_PATTERN = BASE_URL + TRADE_HIST_BY_PAIR_QUERY + "{pair}"
+# ______________________________________________________________________________
+
+
