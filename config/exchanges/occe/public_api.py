@@ -19,8 +19,9 @@ TRADE_PAIRS = [
     "matic_uah", "krb_trx", "ufo_trx"
 ]
 # ______________________________________________________________________________
-# A trade pair to make API requests about
+# What pair to use to get API requests
 TRADE_PAIR = "skyr_trx"
+
 # ______________________________________________________________________________
 # Get active orders by a trade pair section
 ACTIVE_ORDERS_QUERY = "/public/orders/"
@@ -37,5 +38,3 @@ TRADE_HIST_BY_PAIR_QUERY = "/public/info/"
 
 TRADE_HISTORY_BY_PAIR_PATTERN = BASE_URL + TRADE_HIST_BY_PAIR_QUERY + "{pair}"
 # ______________________________________________________________________________
-
-
