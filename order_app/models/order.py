@@ -16,12 +16,12 @@ class Order(models.Model):
     where <exchange> is used exchange form `U_USE_EXCHANGE` concrete django
     settings.
     """
-    amount = models.DecimalField(max_digits=14, decimal_places=8)
+    amount = models.DecimalField(max_digits=16, decimal_places=8)
     date = models.DateTimeField()
     label = models.CharField(max_length=127)
     order_id = models.IntegerField()
-    price = models.DecimalField(max_digits=12, decimal_places=8)
-    total = models.DecimalField(max_digits=12, decimal_places=8)
+    price = models.DecimalField(max_digits=16, decimal_places=8)
+    total = models.DecimalField(max_digits=16, decimal_places=8)
 
     class Meta:
         """

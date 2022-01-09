@@ -4,6 +4,7 @@
 import json
 import logging
 from datetime import datetime
+from decimal import Decimal
 
 from django.db import models
 from django.utils import timezone
@@ -21,7 +22,6 @@ class ActiveOrdersRawJSON(models.Model):
     `hash_field` - there must be only one instance for a certain hash
      otherwise we have a duplicate
     """
-    # lookup_time = models.DateTimeField("lookup time", auto_now_add=True)
     lookup_time = models.DateTimeField("lookup time", default=timezone.now)
     hash_field = models.CharField(max_length=32)
     raw_json = models.BinaryField(max_length=32 * 1024)  # 32 KiB
@@ -76,12 +76,12 @@ class ActiveOrdersRawJSON(models.Model):
                     else:
                         use_model = BuyOrder
                     obj, is_created = use_model.objects.get_or_create(
-                        amount=row["amount"],
+                        amount=Decimal(str(row["amount"])),
                         date=date,
                         label="",  # FIXME:
                         order_id=0,  # Fields from v2 API
-                        price=row["price"],
-                        total=row["total"])
+                        price=Decimal(str(row["price"])),
+                        total=Decimal(str(row["total"])))
                     if is_created:
                         if order_type == "sell":
                             state.sell_orders.add(obj)

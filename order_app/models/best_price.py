@@ -15,7 +15,8 @@ LOGGER.setLevel(logging.INFO)
 
 class BestPrice(models.Model):
     """
-    A model to keep best sell and buy orders at lookup time.
+    A model to keep the best sell and the best buy orders at lookup time.
+    (time of observation, when API call was produced).
 
     Where:
      `raw_json` is a raw json response in binary representation,
@@ -70,9 +71,11 @@ class BestPrice(models.Model):
     def _get_change(self) -> tuple[Decimal, Decimal]:
         """
         Check if the best sell order and the best buy order has changed,
-        if so return the difference between previous and current the best
-        sell/buy orders.
+        if so return the difference between previous and current best sell
+        and best buy orders.
         """
+        # If this is the first record of the table, then there is nothing to
+        # compare with so price change is zero
         if not self.id or self.id == 1:
             sell_change = Decimal("0.0")
             buy_change = Decimal("0.0")

@@ -98,3 +98,11 @@ $ sqlite_bro -h
 * Rename `OrderSnapshot` model to `RawJsonResponseSomething` to reveal its 
   essence.
   
+* Getting
+```
+  \site-packages\django\db\models\fields\__init__
+  .py:1409: RuntimeWarning: DateTimeField SellOrder.date received a naive 
+  datetime (2021-12-27 17:12:11.284000) while time zone support is active.
+```
+
+when making a requesting `take-snapshot` url

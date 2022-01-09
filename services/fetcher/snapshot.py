@@ -23,26 +23,26 @@ def take_active_orders_snapshot():
     )
     raw_snapshot = fetch(orders_url)
     if raw_snapshot is not None:
-        snapshot = validate_order_book(raw_snapshot)
-        if snapshot is None:
+        curr_snapshot = validate_order_book(raw_snapshot)
+        if curr_snapshot is None:
             LOGGER.info("Validate returned None")
         else:
-            _hash = snapshot["_hash"]
+            curr_hash = curr_snapshot["hash_field"]
             rows_count = ActiveOrdersRawJSON.objects.count()
             if rows_count == 0:
                 new_row = ActiveOrdersRawJSON.objects.create(
-                    hash_field=snapshot["_hash"],
-                    data=snapshot["data"]
+                    hash_field=curr_snapshot["hash_field"],
+                    raw_json=curr_snapshot["raw_json"]
                 )
             elif rows_count > 0:
-                last_snapshot = ActiveOrdersRawJSON.objects.order_by(
+                prev_snapshot = ActiveOrdersRawJSON.objects.order_by(
                     "-lookup_time", "-pk"
                 ).first()
-                last_hash = last_snapshot.hash_field
-                if last_hash != _hash:
+                prev_hash = prev_snapshot.hash_field
+                if prev_hash != curr_hash:
                     new_row = ActiveOrdersRawJSON.objects.create(
-                        hash_field=snapshot["_hash"],
-                        data=snapshot["data"]
+                        hash_field=curr_snapshot["hash_field"],
+                        raw_json=curr_snapshot["raw_json"]
                     )
                 else:
                     LOGGER.info("Cannot create Snapshot coz last is the same")

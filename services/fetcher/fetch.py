@@ -66,7 +66,7 @@ def catch_http_error(func: Callable) -> Callable:
 @catch_http_error
 def fetch(url: str) -> bytes:
     """"""
-    resp = urlopen(url)  # IO
+    resp = urlopen(url)  # IO Call
     if resp.code == 200:
         data = resp.read()
         return data
@@ -76,7 +76,12 @@ def fetch(url: str) -> bytes:
 
 
 def fetch_through_proxy(url: str) -> bytes:
-    """"""
+    """
+    A wrapper around `fetch` function to pass all the requests through proxy.
+
+    :param url:
+    :return:
+    """
     final_url = wrap_http_proxy(url)
     data = fetch(final_url)
     return data
@@ -108,15 +113,15 @@ def validate_order_book(raw_json: bytes) -> dict:
         json_obj = json.loads(raw_json)
         if json_obj['result'] == "success":
             sorted_lst = []
-            orders = json_obj["data"]["buyOrders"] + json_obj["data"][
-                "sellOrders"]
+            obj_data = json_obj["data"]
+            orders = obj_data["buyOrders"] + obj_data["sellOrders"]
             for order in orders:
+                date = 0
                 try:
                     date = order["date"]
                 except KeyError as err:
                     price = order["price"]
                     LOGGER.info(f"Found admin order at {price}")
-                    date = 0
                     admin = True
                 finally:
                     row_tuple = (
@@ -128,7 +133,10 @@ def validate_order_book(raw_json: bytes) -> dict:
             sorted_tuple = tuple(sorted_lst)
             b_hash_tuple = md5(json.dumps(sorted_tuple).encode("UTF-8"))
 
-            return {"_hash": b_hash_tuple.hexdigest(), "data": raw_json}
+            return {
+                "hash_field": b_hash_tuple.hexdigest(),
+                "raw_json": raw_json
+            }
         else:
             log_msg = "JSON response is not succeed"
             LOGGER.info(log_msg)
@@ -143,10 +151,11 @@ def format_orders(orders: dict, is_buy_order: bool = False) -> list:
     """Take orders class json object"""
     formatted_orders = []
     new_orders = []
-    orders = sorted(orders,
-                    key=lambda _order: float(_order["price"]),
-                    reverse=is_buy_order
-                    )
+    orders = sorted(
+        orders,
+        key=lambda _order: float(_order["price"]),
+        reverse=is_buy_order
+    )
     total_cap = 0.0
     temp_cap = 0.0
     take = 10
@@ -190,10 +199,8 @@ def format_orders(orders: dict, is_buy_order: bool = False) -> list:
 
         formatted_orders.append({
             "price": price,
-            # "orderId": order["data"]["orderId"],
             "amount": amount,
             "date": python_date,
-            # "label": order["label"],
             "total": order["total"],
             "admin": admin,
             "percent": order["percent"]
