@@ -10,6 +10,11 @@ class Order(models.Model):
     """
     A base class for both Buy and Sell orders. Needed to separate orders
     by their type into two tables to provide database normalization.
+
+    Describes fields of a certain order on the trade market by a trade pair
+    set in `config.exchanges.<exchange>.public_api.TRADE_PAIR`
+    where <exchange> is used exchange form `U_USE_EXCHANGE` concrete django
+    settings.
     """
     amount = models.DecimalField(max_digits=14, decimal_places=8)
     date = models.DateTimeField()

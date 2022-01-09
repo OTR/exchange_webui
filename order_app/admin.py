@@ -4,7 +4,9 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
 
-from .models import OrderSnapshot, SellOrder, BuyOrder, OrderBookState
+from order_app.models import (
+    ActiveOrdersRawJSON, SellOrder, BuyOrder, OrderBookState
+)
 
 
 class OrderSnapshotAdmin(admin.ModelAdmin):
@@ -41,7 +43,7 @@ class OrderBookStateAdmin(admin.ModelAdmin):
 
 
 admin.site.unregister(Group)
-admin.site.register(OrderSnapshot, OrderSnapshotAdmin)
+admin.site.register(ActiveOrdersRawJSON, OrderSnapshotAdmin)
 admin.site.register(BuyOrder, OrderAdmin)
 admin.site.register(SellOrder, OrderAdmin)
 admin.site.register(OrderBookState, OrderBookStateAdmin)

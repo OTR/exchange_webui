@@ -1,5 +1,13 @@
 """
-
+1) Walk through backup directory and read bytes of all the files and collect
+    in a container
+    which is saved as separate files on the disk. The name of each file is
+    the time at which an API call was produced, would be used as parameter of
+    `lookup_time` field when creating a table record.
+2) Parse raw JSON responses of `get active orders by trade pair` API endpoint
+3) ...
+4) ...
+Populate `ActiveOrdersRawJSON` table with
 """
 import json
 import logging
@@ -11,10 +19,16 @@ from pathlib import Path
 from typing import NamedTuple
 from hashlib import md5
 
-from ..order_app.models import OrderSnapshot
+from order_app.models import ActiveOrdersRawJSON
 
-CONFIG_MODULE = import_module("config.settings.test_settings")
-BACKUP_DIR = CONFIG_MODULE.U_BACKUP_DIR
+
+# What Django settings to use
+DJANGO_SETTINGS_MODULE = import_module("config.settings.test_settings")
+# A directory where Raw JSON responses are placed
+BACKUP_DIR = DJANGO_SETTINGS_MODULE.U_BACKUP_DIR
+# A container that describes fields of a parsed JSON object
+# These fields would be passed as database table arguments on the time of
+# creation database record
 raw_response = namedtuple(
     "RawResponse", (
         "lookup_time",
@@ -118,12 +132,10 @@ def get_hash_of_orders(json_at_time_objects: list) -> list:
     return json_with_hash_objects
 
 
-def create_datebase_row(json_hex_at_time_object: list) -> None:
+def create_database_row(json_hex_at_time_object: list) -> None:
     """"""
     hash_field = json_hex_at_time_object.hash_field
-    hash_field = json_hex_at_time_object.hash_field
-    hash_field = json_hex_at_time_object.hash_field
-    obj, created = OrderSnapshot.objects.get_or_create(
+    obj, created = ActiveOrdersRawJSON.objects.get_or_create(
         hash_field=hash_field.hexdigest())
     if not created:
         # There is a row with given unique hash
@@ -138,8 +150,15 @@ def create_datebase_row(json_hex_at_time_object: list) -> None:
         obj.save()
 
 
-if __name__ == '__main__':
+def load_active_orders_backup() -> None:
+    """
+    A main function that calls other help functions step by step.
+    """
     raw_responses = load_files_from_dir(BACKUP_DIR)
-    filtered_resps = filter_out_bad_responses(raw_responses)
-    json_at_time_seq = filter_out_bad_json_objects(filtered_resps)
-    json_objs_at_time_seq = get_hash_of_orders(json_at_time_seq)
+    filtered_responses = filter_out_bad_responses(raw_responses)
+    raw_json_at_time_seq = filter_out_bad_json_objects(filtered_responses)
+    json_objects_at_time_seq = get_hash_of_orders(raw_json_at_time_seq)
+
+
+if __name__ == '__main__':
+    load_active_orders_backup()

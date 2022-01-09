@@ -1,6 +1,9 @@
 """
-Base Django settings for `exchange_webui` project, DO NOT use it on its own,
+Base Django settings for `exchange_webui` project, DO NOT USE IT AS IS,
 any concrete settings should extend these settings.
+
+BEWARE: does not contain `DATABASES` settings, its should be implemented in
+your concrete settings.
 """
 from pathlib import Path
 
@@ -72,6 +75,8 @@ USE_I18N = True
 USE_TZ = True
 STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Where to keep application logs
 LOGGING_ROOT = BASE_DIR / ".app_data" / "order_app.log"
 
 LOGGING = {

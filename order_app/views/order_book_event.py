@@ -3,7 +3,7 @@
 """
 from django.views.generic import ListView
 
-from ..models import OrderBookState
+from order_app.models import OrderBookState
 
 
 class OrderBookEventView(ListView):

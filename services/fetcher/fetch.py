@@ -12,7 +12,6 @@ from urllib.error import HTTPError
 from urllib.parse import quote
 from urllib.request import urlopen, build_opener, OpenerDirector
 
-
 LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel(logging.INFO)
 USE_PROXY = False
@@ -85,6 +84,7 @@ def fetch_through_proxy(url: str) -> bytes:
 
 class PublicAPIOpener(ABC):
     """"""
+
     def __init__(self):
         """"""
         self.opener = None
@@ -92,6 +92,7 @@ class PublicAPIOpener(ABC):
 
 class OCCEPublicAPIOpener(PublicAPIOpener):
     """"""
+
     def __init__(self):
         """"""
         super(OCCEPublicAPIOpener, self).__init__()
@@ -198,8 +199,10 @@ def format_orders(orders: dict, is_buy_order: bool = False) -> list:
             "percent": order["percent"]
         })
 
-    formatted_orders = sorted(formatted_orders,
-                              key=lambda _order: float(_order["price"]),
-                              reverse=True)
+    formatted_orders = sorted(
+        formatted_orders,
+        key=lambda _order: float(_order["price"]),
+        reverse=True
+    )
 
     return formatted_orders

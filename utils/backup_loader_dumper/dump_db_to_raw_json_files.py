@@ -7,7 +7,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.test_settings")
 import django
 
 django.setup()
-from order_app.models import OrderSnapshot
+from order_app.models import ActiveOrdersRawJSON
 
 
 class Row(object):
@@ -19,19 +19,19 @@ class Row(object):
         self.number = index
         self.id = db_row.id
         self.lookup_time = db_row.lookup_time
-        self.hash_ = db_row.hash_
-        self.data = db_row.raw_json
+        self.hash_field = db_row.hash_field
+        self.raw_json = db_row.raw_json
 
         self.rows.append(self)
 
     def backup(self) -> None:
         """"""
         with open(f"{self.lookup_time.timestamp()}.json", "wb") as f1:
-            f1.write(self.data)
+            f1.write(self.raw_json)
 
 
 if __name__ == "__main__":
-    for index, db_row in enumerate(OrderSnapshot.objects.order_by("id")):
+    for index, db_row in enumerate(ActiveOrdersRawJSON.objects.order_by("id")):
         Row(index, db_row)
 
     for row in Row.rows:

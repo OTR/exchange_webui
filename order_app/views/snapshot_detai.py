@@ -6,7 +6,7 @@ from pprint import pformat
 
 from django.views.generic import DetailView
 
-from ..models.order_snapshot import OrderSnapshot
+from order_app.models.active_orders_raw_json import ActiveOrdersRawJSON
 
 
 class SnapshotDetailView(DetailView):
@@ -14,7 +14,7 @@ class SnapshotDetailView(DetailView):
     A view to display details about a certain snapshot (a state of the order
     book at the moment of observation).
     """
-    model = OrderSnapshot
+    model = ActiveOrdersRawJSON
     template_name = "order_app/snapshot_detail.html"
 
     def get_context_data(self, **kwargs) -> dict:

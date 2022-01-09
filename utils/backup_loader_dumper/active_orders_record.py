@@ -10,17 +10,17 @@ django.setup()
 import json
 
 
-class Row(object):
+class ActiveOrdersRecord(object):
     """"""
 
-    rows = []
+    active_orders_records = []
 
     def __init__(self, index, db_row) -> None:
         """"""
         self.number = index
         self.id = db_row.id
         self.lookup_time = db_row.lookup_time
-        self.hash_ = db_row.hash_
+        self.hash_field = db_row.hash_field
         self.data = db_row.raw_json
 
         json_obj = json.loads(self.data)
@@ -37,4 +37,4 @@ class Row(object):
 
         self.buy_set = buy_set
         self.sell_set = sell_set
-        self.rows.append(self)
+        self.active_orders_records.append(self)

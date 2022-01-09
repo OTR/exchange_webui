@@ -68,7 +68,7 @@ class OCCEReportHandler(object):
         """
         An order with date field set to 0 looks suspicious because usually
         that field set to date the order was made on so mark them as admin
-        orders
+        orders.
         """
         if order.date == OCCEReportHandler.start_epoch:
             is_admin = ADMIN_ORDER

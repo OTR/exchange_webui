@@ -2,12 +2,12 @@
 
 """
 import logging
+from importlib import import_module
 
 from django.conf import settings
-from importlib import import_module
-from order_app.models.order_snapshot import OrderSnapshot
-from services.fetcher.fetch import fetch, validate_order_book
 
+from order_app.models.active_orders_raw_json import ActiveOrdersRawJSON
+from services.fetcher.fetch import fetch, validate_order_book
 
 LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel(logging.INFO)
@@ -28,18 +28,19 @@ def take_active_orders_snapshot():
             LOGGER.info("Validate returned None")
         else:
             _hash = snapshot["_hash"]
-            rows_count = OrderSnapshot.objects.count()
+            rows_count = ActiveOrdersRawJSON.objects.count()
             if rows_count == 0:
-                new_row = OrderSnapshot.objects.create(
+                new_row = ActiveOrdersRawJSON.objects.create(
                     hash_field=snapshot["_hash"],
                     data=snapshot["data"]
                 )
             elif rows_count > 0:
-                last_snapshot = OrderSnapshot.objects.order_by("-lookup_time",
-                                                               "-pk").first()
+                last_snapshot = ActiveOrdersRawJSON.objects.order_by(
+                    "-lookup_time", "-pk"
+                ).first()
                 last_hash = last_snapshot.hash_field
                 if last_hash != _hash:
-                    new_row = OrderSnapshot.objects.create(
+                    new_row = ActiveOrdersRawJSON.objects.create(
                         hash_field=snapshot["_hash"],
                         data=snapshot["data"]
                     )

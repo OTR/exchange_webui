@@ -1,5 +1,5 @@
 """
-Base settings for production use, DO NOT use it on its own, any concrete
+Base settings for production use, DO NOT USE IT AS IS, any concrete
 production settings should extend this settings.
 
 See: https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/

@@ -8,7 +8,7 @@ from importlib import import_module
 from django.conf import settings
 from django.views.generic import TemplateView
 
-from services.fetch import fetch, format_orders
+from services.fetcher.fetch import fetch, format_orders
 
 
 LOGGER = logging.getLogger(__name__)
@@ -26,8 +26,10 @@ class ActiveOrderView(TemplateView):
         """TODO: move JSON parsing into services module."""
         context = super().get_context_data(**kwargs)
         pattern = PUBLIC_API_CONF.ACTIVE_ORDERS_URL_PATTERN
-        orders_url = pattern.format(pair="ltv_usdt")
-        data = fetch(orders_url)
+        orders_url = pattern.format(
+            pair=PUBLIC_API_CONF.TRADE_PAIR
+        )
+        data = fetch(orders_url)  # Blocking IO call
         if data is None:
             LOGGER.info("Fetcher returned None")
             return {}

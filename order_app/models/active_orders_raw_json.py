@@ -9,14 +9,14 @@ from django.db import models
 from django.utils import timezone
 from django.conf import settings
 
-from ..models import BuyOrder, OrderBookState, SellOrder
+from order_app.models import BuyOrder, OrderBookState, SellOrder
 
 
 LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel(logging.INFO)
 
 
-class OrderSnapshot(models.Model):
+class ActiveOrdersRawJSON(models.Model):
     """
     `hash_field` - there must be only one instance for a certain hash
      otherwise we have a duplicate

@@ -8,12 +8,12 @@ from django.db import models
 from django.utils import timezone
 
 from services.process_db_rows.order_book_state_report import ReportMaker
-from ..models import BuyOrder, SellOrder
+from order_app.models import BuyOrder, SellOrder
 
 
-DATE_FORMAT = settings.U_DATETIME_FORMAT
+DATETIME_FORMAT = settings.U_DATETIME_FORMAT
 REPORT_HANDLER = settings.U_REPORT_HANDLER
-# FIXME: Solve circular import
+# FIXME: Solve circular import exception
 if REPORT_HANDLER == "OCCEReportHandler":
     from services.process_db_rows.order_book_state_report import \
         OCCEReportHandler as REPORT_HANDLER
@@ -32,7 +32,7 @@ open_and_closed_orders = namedtuple("OpenNClosedOrders",
 class OrderBookState(models.Model):
     """
     A model to keep state of an order book of hardcoded trade pair at lookup
-    time.
+    time (observation time, time when API call was produced).
     """
     lookup_time = models.DateTimeField("lookup time")
     buy_orders = models.ManyToManyField(BuyOrder)
@@ -43,7 +43,7 @@ class OrderBookState(models.Model):
         :return: verbose name of local time at observation moment.
         """
         return "{}".format(
-            timezone.localtime(self.lookup_time).strftime(DATE_FORMAT)
+            timezone.localtime(self.lookup_time).strftime(DATETIME_FORMAT)
         )
 
     def get_buy_orders_as_str(self) -> str:
@@ -68,7 +68,7 @@ class OrderBookState(models.Model):
 
     def get_order_book_state_change(self) -> str:
         """
-        Compare entries of the previous row with current ones.
+        Compare fields of the previous row with the current one.
 
         :return: Combined verbose report
         """

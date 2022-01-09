@@ -1,13 +1,7 @@
 """
 
 """
-import logging
-
 from django.views.generic import TemplateView
-
-
-LOGGER = logging.getLogger(__name__)
-LOGGER.setLevel(logging.INFO)
 
 
 class BidAskView(TemplateView):

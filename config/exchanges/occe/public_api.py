@@ -1,12 +1,16 @@
 """
-Constants to combine requests to public API
+Constants to combine URL queries to make calls to public API end points.
+
+These API calls return non user specified information i.e. treating you as
+an anonymous user.
+
 Last Modified: 04.01.2022
 """
 
 # Common part of each final URL
 BASE_URL = "https://api.occe.io"
 
-# Available trade pairs
+# Available trade pairs on the market
 TRADE_PAIRS = [
     "doge_btc", "eth_btc", "btc_uah", "krb_btc", "doge_uah", "eth_uah",
     "rdd_btc", "tlr_btc", "ufo_btc", "krb_usdt", "uni_usdt", "ltv_usdt",
@@ -19,21 +23,21 @@ TRADE_PAIRS = [
     "matic_uah", "krb_trx", "ufo_trx"
 ]
 # ______________________________________________________________________________
-# What pair to use to get API requests
+# What trade pair to use to make API requests
 TRADE_PAIR = "skyr_trx"
 
 # ______________________________________________________________________________
-# Get active orders by a trade pair section
+# Get active orders by a certain trade pair
 ACTIVE_ORDERS_QUERY = "/public/orders/"
 
 ACTIVE_ORDERS_URL_PATTERN = BASE_URL + ACTIVE_ORDERS_QUERY + "{pair}"
 # ______________________________________________________________________________
-# Get server time. Used for signature creation
+# Get server time. Used for signature creation when making private API calls
 SERVER_TIME_QUERY = "/public/tradeview/time"
 
 SERVER_TIME_URL = BASE_URL + SERVER_TIME_QUERY
 # ______________________________________________________________________________
-# Get trade history by given trade pair
+# Get market trade history by given trade pair
 TRADE_HIST_BY_PAIR_QUERY = "/public/info/"
 
 TRADE_HISTORY_BY_PAIR_PATTERN = BASE_URL + TRADE_HIST_BY_PAIR_QUERY + "{pair}"

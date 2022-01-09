@@ -1,14 +1,13 @@
 """
 
 """
-
 from django.views.generic import ListView
 
-from ..models import OrderSnapshot
+from order_app.models import ActiveOrdersRawJSON
 
 
-class SnapshotView(ListView):
+class ActiveOrdersRawJSONView(ListView):
     """Not Implemented yet."""
-    model = OrderSnapshot
+    model = ActiveOrdersRawJSON
     paginate_by = 10
     template_name = "order_app/snapshots.html"

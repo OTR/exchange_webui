@@ -1,12 +1,25 @@
 """
+End points description:
 
+`index` - TODO: Not implemented yet. Root page of the site, show description
+            of the app and some help message.
+`active-orders` -
+`bid-ask` -
+`events` -
+`take-snapshot` - a dirty hack to make Django request foreign API, synchronously
+                block the program, TODO: use Celery instead.
+`snapshots` - show a list of collected snapshots (a bunch of raw json responses
+              when getting request to `get active orders by trade pair` API end
+              point)
+`snapshot-detail` - detailed view of a certain snapshot, literally shows RAW
+                    json response taken at the time of observation.
 """
 from django.urls import path
 
 import order_app.apps
-from .views import (
+from order_app.views import (
     ActiveOrderView, BidAskView, IndexView, OrderBookEventView,
-    SnapshotDetailView, SnapshotView, take_snapshot_view
+    SnapshotDetailView, ActiveOrdersRawJSONView, take_snapshot_view
 )
 
 
@@ -17,7 +30,7 @@ urlpatterns = [
     path("bid-ask/", BidAskView.as_view(), name="bid-ask"),
     path("events/", OrderBookEventView.as_view(), name="events"),
     path("take-snapshot/", take_snapshot_view, name="take-snapshot"),
-    path("snapshots/", SnapshotView.as_view(), name="snapshots"),
+    path("snapshots/", ActiveOrdersRawJSONView.as_view(), name="snapshots"),
     path(
         "snapshots/<int:pk>/",
         SnapshotDetailView.as_view(),

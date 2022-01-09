@@ -19,9 +19,9 @@ class BestPriceModelTest(TestCase):
         # Get arithmetic mean value
         mean = int((price_range[1] - price_range[0]) / 2)
         for i in range(40):
-            best_sell = randint(mean, price_range[1])  # From middle to high
+            best_sell = randint(mean, price_range[1])  # From mean to high
             seed()
-            best_buy = randint(price_range[0], mean)  # From low to middle
+            best_buy = randint(price_range[0], mean)  # From low to mean
             seed()
             BestPrice.objects.create(
                 best_sell=best_sell,

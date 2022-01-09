@@ -1,7 +1,8 @@
 """
-Concrete production settings for `pythonanywhere.com`
+Concrete production settings for `pythonanywhere.com`, extend base production
+ settings from `prod_settings.py`
 
-Variables with leading underscore mean user defined settings, not Django's
+Variables with leading "U_" mean user defined settings, not Django's
 """
 import os
 
